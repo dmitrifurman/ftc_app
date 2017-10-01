@@ -95,6 +95,7 @@ public class CrabBotOpMode extends LinearOpMode {
             double turn  =  gamepad1.right_stick_x;
             boolean drop  =  gamepad1.b;
             boolean rise  =  gamepad1.a;
+
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
             if(rise){
