@@ -61,12 +61,6 @@ public class CrabBotOpMode extends LinearOpMode {
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor elevator = null;
-
-
-
-
-
-
     static final double MAX_GRAB     =  0.75;     // Maximum rotational position
     static final double MIN_GRAB     =  0.0;
     Servo grabber;
