@@ -29,31 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-
-/**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-
-@TeleOp(name="Crab Bot OpMode", group="Linear Opmode")
-//@Disabled
+@TeleOp(name = "Crab Bot OpMode", group = "Linear Opmode")
 public class CrabBotOpMode extends LinearOpMode {
 
     // Declare OpMode members.
@@ -61,26 +44,40 @@ public class CrabBotOpMode extends LinearOpMode {
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor elevator = null;
-    static final double MAX_GRAB     =  0.75;     // Maximum rotational position
-    static final double MIN_GRAB     =  0.0;
-    static final double MAX_SPIN     =  1.0;     // Maximum rotational position
-    static final double MIN_SPIN     =  0.0;     // Minimum rotational position
-    Servo grabber;
-    double  position = (MAX_GRAB);
-    boolean work = true;
-    Servo   spingrabber;
-    double  positionspin = (MAX_SPIN - MIN_SPIN) / 2 - .0625; // Start at halfway position
-    boolean rampUp = true;
-    boolean pressedcc = false;
-    boolean pressedc = false;
+    private static final double MAX_GRAB = 0.75;     // Maximum rotational position
+    private static final double MIN_GRAB = 0.0;
+    private static final double MAX_SPIN = 1.0;     // Maximum rotational position
+    private static final double MIN_SPIN = 0.0;     // Minimum rotational position
+    private Servo grabber;
+    private Servo spingrabber;
+    private double positionspin = (MAX_SPIN - MIN_SPIN) / 2 - .0625; // Start at halfway position
+    private boolean pressedcc = false;
+    private boolean pressedc = false;
+
     public void runOpMode() {
+        initialize();
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+
+            handleElevator();
+
+            handleGrabber();
+
+            handleDrive();
+
+            // Show the elapsed game time
+            outputTelemetery("Status", "Run Time: " + runtime.toString());
+        }
+    }
+
+    private void initialize() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         elevator = hardwareMap.get(DcMotor.class, "elevator");
         grabber = hardwareMap.get(Servo.class, "grabber");
@@ -94,74 +91,77 @@ public class CrabBotOpMode extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+    }
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+    private void handleDrive() {
+        // Setup a variable for each drive wheel to save power level for telemetry
+        double leftPower;
+        double rightPower;
 
-            // Setup a variable for each drive wheel to save power level for telemetry
-            double leftPower;
-            double rightPower;
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
+        // Use left stick to go forward, and right stick to turn.
+        // - This uses basic math to combine motions and is easier to drive straight.
+        double drive = -gamepad1.left_stick_y;
+        double turn = gamepad1.right_stick_x;
 
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
-            boolean drop  =  gamepad1.b;
-            boolean rise  =  gamepad1.a;
-            boolean grab  =  gamepad1.x;
-            boolean grabberturnclock = gamepad1.dpad_right;
-            boolean grabberturncounterclock = gamepad1.dpad_left;
+        leftPower = Range.clip(drive + turn, -1.0, 1.0);
+        rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-            if(rise){
-                elevator.setPower(1.0);
-            } if(drop){
-                elevator.setPower(-0.15);
-            } else {
-                elevator.setPower(0);
-            }
-            if (work){
-                //servo motor 0
-                if (grab) {
-                    grabber.setPosition(MIN_GRAB);
-                } else {
-                    grabber.setPosition(MAX_GRAB);
-                }
-            }
-            spingrabber.setPosition(positionspin);
+        // Send calculated power to wheels
+        leftDrive.setPower(leftPower);
+        rightDrive.setPower(rightPower);
 
-            if(grabberturncounterclock) {
-                if(!pressedcc) {
-                    positionspin = positionspin - .125;
-                    pressedcc = true;
-                }
-            }else{
-                pressedcc = false;
-            }
-            if(grabberturnclock) {
-                if(!pressedc) {
-                    positionspin = positionspin + .125;
-                    pressedc = true;
-                }
-            }else{
-                pressedc = false;
-            }
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            /// leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
+        // Show the wheel power.
+        outputTelemetery("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+    }
 
-            // Send calculated power to wheels
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
+    private void handleElevator() {
+        boolean drop = gamepad1.b;
+        boolean rise = gamepad1.a;
 
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.update();
+        if (rise) {
+            elevator.setPower(1.0);
         }
+        if (drop) {
+            elevator.setPower(-0.15);
+        } else {
+            elevator.setPower(0);
+        }
+    }
+
+    private void handleGrabber() {
+
+        boolean grab = gamepad1.x;
+        boolean grabberturnclock = gamepad1.dpad_right;
+        boolean grabberturncounterclock = gamepad1.dpad_left;
+
+        //servo motor 0
+        if (grab) {
+            grabber.setPosition(MIN_GRAB);
+        } else {
+            grabber.setPosition(MAX_GRAB);
+        }
+        spingrabber.setPosition(positionspin);
+
+        if (grabberturncounterclock) {
+            if (!pressedcc) {
+                positionspin = positionspin - .125;
+                pressedcc = true;
+            }
+        } else {
+            pressedcc = false;
+        }
+        if (grabberturnclock) {
+            if (!pressedc) {
+                positionspin = positionspin + .125;
+                pressedc = true;
+            }
+        } else {
+            pressedc = false;
+        }
+    }
+
+    private void outputTelemetery(String field, Object... data) {
+        telemetry.addData(field, data);
+        telemetry.update();
     }
 }
