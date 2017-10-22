@@ -63,10 +63,16 @@ public class CrabBotOpMode extends LinearOpMode {
     private DcMotor elevator = null;
     static final double MAX_GRAB     =  0.75;     // Maximum rotational position
     static final double MIN_GRAB     =  0.0;
+    static final double MAX_SPIN     =  1.0;     // Maximum rotational position
+    static final double MIN_SPIN     =  0.0;     // Minimum rotational position
     Servo grabber;
     double  position = (MAX_GRAB);
     boolean work = true;
-    @Override
+    Servo   spingrabber;
+    double  positionspin = (MAX_SPIN - MIN_SPIN) / 2 - .0625; // Start at halfway position
+    boolean rampUp = true;
+    boolean pressedcc = false;
+    boolean pressedc = false;
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -78,6 +84,7 @@ public class CrabBotOpMode extends LinearOpMode {
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         elevator = hardwareMap.get(DcMotor.class, "elevator");
         grabber = hardwareMap.get(Servo.class, "grabber");
+        spingrabber = hardwareMap.get(Servo.class, "spingrabber");
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -104,6 +111,8 @@ public class CrabBotOpMode extends LinearOpMode {
             boolean drop  =  gamepad1.b;
             boolean rise  =  gamepad1.a;
             boolean grab  =  gamepad1.x;
+            boolean grabberturnclock = gamepad1.dpad_right;
+            boolean grabberturncounterclock = gamepad1.dpad_left;
 
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
@@ -121,6 +130,24 @@ public class CrabBotOpMode extends LinearOpMode {
                 } else {
                     grabber.setPosition(MAX_GRAB);
                 }
+            }
+            spingrabber.setPosition(positionspin);
+
+            if(grabberturncounterclock) {
+                if(!pressedcc) {
+                    positionspin = positionspin - .125;
+                    pressedcc = true;
+                }
+            }else{
+                pressedcc = false;
+            }
+            if(grabberturnclock) {
+                if(!pressedc) {
+                    positionspin = positionspin + .125;
+                    pressedc = true;
+                }
+            }else{
+                pressedc = false;
             }
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
