@@ -31,10 +31,8 @@ package org.firstinspires.ftc.teamcode;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.renderscript.Sampler;
 import android.view.View;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -53,9 +51,9 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@TeleOp(name = "auto blue", group = "Sensor")
+@TeleOp(name = "auto red", group = "Sensor")
 //@Disabled
-public class SensorColor extends LinearOpMode {
+public class SensorColorred extends LinearOpMode {
   private DcMotor leftDrive = null;
   private DcMotor rightDrive = null;
   /** The colorSensor field will contain a reference to our color sensor hardware object */
@@ -181,11 +179,11 @@ public class SensorColor extends LinearOpMode {
         telemetry.update();
 
         if(isRed){
-            handleDrive(.25,.25);
+            handleDrive(-.25,-.25);
             Thread.sleep(500);
 
         } else if (isBlue) {
-            handleDrive(-.25,-.25);
+            handleDrive(.25,.25);
             Thread.sleep(500);
         } else {
             handleDrive(0, 0);
