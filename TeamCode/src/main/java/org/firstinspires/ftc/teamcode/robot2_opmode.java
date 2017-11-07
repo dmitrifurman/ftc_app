@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -74,10 +75,10 @@ public class robot2_opmode extends LinearOpMode {
         leftbackDrive = hardwareMap.get(DcMotor.class, "leftback_drive");
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftbackDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightbackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightbackDrive.setDirection(DcMotor.Direction.FORWARD);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -88,8 +89,7 @@ public class robot2_opmode extends LinearOpMode {
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
-            double rightBackPower;
-            double leftBackPower;
+            double shiftPower;
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
@@ -97,20 +97,36 @@ public class robot2_opmode extends LinearOpMode {
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y;
             double side  =  gamepad1.left_stick_x;
+            double shift =  gamepad1.right_stick_x;
+            double shiftleft =
             leftPower    = Range.clip(drive + side, -1.0, 1.0) ;
             rightPower   = Range.clip(drive - side, -1.0, 1.0) ;
-
+            shiftPower   = Range.clip(shift + drive, -1.0, 1.0);
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
             // rightPower = -gamepad1.right_stick_y ;
-
+//motor derection for shifting
+            if (shift != 0){
+                leftDrive.setDirection(DcMotor.Direction.FORWARD);
+                rightDrive.setDirection(DcMotor.Direction.FORWARD);
+                leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
+                rightbackDrive.setDirection(DcMotor.Direction.REVERSE);
+                //motor derection for regular movement
+            } else {
+                leftDrive.setDirection(DcMotor.Direction.REVERSE);
+                rightDrive.setDirection(DcMotor.Direction.FORWARD);
+                leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
+                rightbackDrive.setDirection(DcMotor.Direction.FORWARD);
+            }
+            //turn on motors
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
             rightbackDrive.setPower(rightPower);
             leftbackDrive.setPower(leftPower);
             // Show the elapsed game time and wheel power.
+
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("drive/side", "left (%.2f), right (%.2f)", drive, side);
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
