@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.util.Range;
 
 
 /**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
+ * This fil e contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
  * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
@@ -98,7 +98,7 @@ public class robot2_opmode extends LinearOpMode {
             double drive = -gamepad1.left_stick_y;
             double side  =  gamepad1.left_stick_x;
             double shift =  gamepad1.right_stick_x;
-            double shiftleft =
+
             leftPower    = Range.clip(drive + side, -1.0, 1.0) ;
             rightPower   = Range.clip(drive - side, -1.0, 1.0) ;
             shiftPower   = Range.clip(shift + drive, -1.0, 1.0);
