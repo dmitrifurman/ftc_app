@@ -64,7 +64,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="encoders work now!!!", group="Pushbot")
+@Autonomous(name="encoders work now!!! shift auto test 3", group="Pushbot")
 //@Disabled
 public class encodersWorking extends LinearOpMode {
 
@@ -79,6 +79,7 @@ public class encodersWorking extends LinearOpMode {
                                                       (WHEEL_DIAMETER_INCHES * Math.PI);
     static final double     DRIVE_SPEED             = 0.6;
     static final double  TURN_SPEED = 0.5;
+
     @Override
     public void runOpMode() {
 
@@ -117,14 +118,29 @@ public class encodersWorking extends LinearOpMode {
         waitForStart();
 
 
+
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-
+         robot.leftDrive.setDirection(DcMotor.Direction.REVERSE);
+            robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
+            robot.leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
+            robot.rightbackDrive.setDirection(DcMotor.Direction.FORWARD);
         encoderDrive(DRIVE_SPEED,  12, 12, 2.0);  // S1: Forward 1 feet with 5 Sec timeout
         encoderDrive(TURN_SPEED, 1.5, -1.5, 2.0);  // S2: Turn Right 3 Inches with 4 Sec timeout
         encoderDrive(DRIVE_SPEED, 6, 6, 2.0);  // S3: forward 1 foot with 4 Sec timeout
-        encoderDrive(TURN_SPEED, -6, 6, 2.0);
-        encoderDrive(DRIVE_SPEED,  -9, -9, 2.0);
+        encoderDrive(TURN_SPEED, -5.5, 5.5, 2.0);
+         robot.leftDrive.setDirection(DcMotor.Direction.FORWARD);
+            robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
+            robot.leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
+            robot.rightbackDrive.setDirection(DcMotor.Direction.REVERSE);
+        encoderDrive(DRIVE_SPEED, 6, 6, 2.0);
+         robot.leftDrive.setDirection(DcMotor.Direction.REVERSE);
+            robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
+            robot.leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
+            robot.rightbackDrive.setDirection(DcMotor.Direction.FORWARD);
+        encoderDrive(DRIVE_SPEED, 3, 3, 2.0);
+
+
     /*    robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
         robot.rightClaw.setPosition(0.0);
         sleep(1000);     // pause for servos to move

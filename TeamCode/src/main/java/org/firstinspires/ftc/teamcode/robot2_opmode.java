@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.util.Range;
 
 
 /**
- * This fil e contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
+ * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
  * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="robot2prototype_code", group="Linear Opmode")
+@TeleOp(name="robot2prototype_code from friday", group="Linear Opmode")
 //@Disabled
 public class robot2_opmode extends LinearOpMode {
 
