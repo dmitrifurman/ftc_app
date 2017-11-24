@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="robot2prototype_code", group="Linear Opmode")
+@TeleOp(name="robot2prototype_code from friday", group="Linear Opmode")
 //@Disabled
 public class robot2_opmode extends LinearOpMode {
 
@@ -98,7 +98,7 @@ public class robot2_opmode extends LinearOpMode {
             double drive = -gamepad1.left_stick_y;
             double side  =  gamepad1.left_stick_x;
             double shift =  gamepad1.right_stick_x;
-            double shiftleft =
+
             leftPower    = Range.clip(drive + side, -1.0, 1.0) ;
             rightPower   = Range.clip(drive - side, -1.0, 1.0) ;
             shiftPower   = Range.clip(shift + drive, -1.0, 1.0);
