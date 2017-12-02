@@ -31,8 +31,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * This is NOT an opmode.
@@ -95,15 +93,10 @@ public class MyHardwarePushbot {
     }
 
     public void resetMotors() {
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
-        leftbackDrive.setPower(0);
-        rightbackDrive.setPower(0);
-
-        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
 

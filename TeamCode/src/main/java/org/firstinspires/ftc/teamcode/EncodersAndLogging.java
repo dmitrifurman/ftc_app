@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "Encoders Working", group = "Robosapiens")
+@Autonomous(name = "1 foot auto  shift", group = "Robosapiens")
 public class EncodersAndLogging extends LinearOpMode {
 
     private static final String TAG = "ENCODERS";
@@ -44,22 +44,43 @@ public class EncodersAndLogging extends LinearOpMode {
     MyHardwarePushbot robot = new MyHardwarePushbot();
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double COUNTS_PER_INCH = 2000;
-
+    static final double FORWARD_ENCODER_COUNTS_PER_INCH = 116;
+    static final double LATERAL_ENCODER_COUNTS_PER_INCH = 141.15;
     static final double DRIVE_SPEED = 0.6;
     static final double TURN_SPEED = 0.5;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        initialize();
-        waitForStart();
-        moveMotors();
-        log("Program Complete");
+        try {
+            initialize();
+            waitForStart();
+        //    moveForwardBy(24.0);
+
+         //   sleep(5000);
+
+            moveLateralBy(24.0);
+
+          //  sleep(5000);
+
+          //  moveForwardBy(24.0);
+            log("Program Complete");
+        } finally {
+            robot.resetMotors();
+        }
     }
 
-    private void moveMotors() {
-        encoderDrive(DRIVE_SPEED, 10.0, 3.0);
+    private void moveForwardBy(double inches) {
+        encoderForward(DRIVE_SPEED, inches);
+        moveForUpTo(3.0);
+        robot.resetMotors();
     }
+
+    private void moveLateralBy(double inches) {
+        encoderLateral(DRIVE_SPEED, inches);
+        moveForUpTo(3.0);
+        robot.resetMotors();
+    }
+
 
     private void initialize() {
         robot.init(hardwareMap);
@@ -75,26 +96,38 @@ public class EncodersAndLogging extends LinearOpMode {
      *  2) Move runs out of time
      *  3) Driver stops the opmode running.
      */
-    public void encoderDrive(double speed,
-                             double inches,
-                             double timeoutS) {
+    private void encoderForward(double speed,
+                                double inches) {
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
-            setToMoveBy(inches);
+            robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
+            robot.leftDrive.setDirection(DcMotor.Direction.REVERSE);
+            robot.rightbackDrive.setDirection(DcMotor.Direction.FORWARD);
+            robot.leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
+            setToMoveBy(inches, FORWARD_ENCODER_COUNTS_PER_INCH);
             setToMoveAt(speed);
-            moveForUpTo(timeoutS);
         }
     }
 
-    private void setToMoveBy(double inches) {
+    public void encoderLateral(double speed,
+                               double inches) {
+        if (opModeIsActive()) {
+            robot.leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
+            robot.rightbackDrive.setDirection(DcMotor.Direction.REVERSE);
+            robot.leftDrive.setDirection(DcMotor.Direction.FORWARD);
+            robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
+            setToMoveBy(inches, LATERAL_ENCODER_COUNTS_PER_INCH);
+            setToMoveAt(speed);
+        }
+    }
 
+    private void setToMoveBy(double inches, double encoderCountsPerInch) {
         log("Starting Encoder Position");
         logEncoderPosition();
-        // Determine new target position, and pass to motor controller
-        int newLeftTarget = robot.leftDrive.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-        int newRightTarget = robot.rightDrive.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-        int newLeftbackTarget = robot.leftbackDrive.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-        int newRightbackTarget = robot.rightbackDrive.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+        int newLeftTarget = robot.leftDrive.getCurrentPosition() + (int) (inches * encoderCountsPerInch);
+        int newRightTarget = robot.rightDrive.getCurrentPosition() + (int) (inches * encoderCountsPerInch);
+        int newLeftbackTarget = robot.leftbackDrive.getCurrentPosition() + (int) (inches * encoderCountsPerInch);
+        int newRightbackTarget = robot.rightbackDrive.getCurrentPosition() + (int) (inches * encoderCountsPerInch);
 
         // Turn On RUN_TO_POSITION
         robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -111,9 +144,9 @@ public class EncodersAndLogging extends LinearOpMode {
 
     private void setToMoveAt(double speed) {
         robot.leftDrive.setPower(Math.abs(speed));
-        robot.rightDrive.setPower(Math.abs(speed));
+        robot.rightDrive.setPower(Math.abs(speed)+.01);
         robot.leftbackDrive.setPower(Math.abs(speed));
-        robot.rightbackDrive.setPower(Math.abs(speed));
+        robot.rightbackDrive.setPower(Math.abs(speed)+.01);
     }
 
     private void moveForUpTo(double timeoutS) {
@@ -123,13 +156,12 @@ public class EncodersAndLogging extends LinearOpMode {
             log("Changing Encoder Position");
             logEncoderPosition();
         }
-        robot.resetMotors();
         log("Final Encoder Position");
         logEncoderPosition();
     }
 
     private void log(String message, Throwable... throwables) {
-        if (throwables.length > 0) {
+        if (throwables.length > 0){
             Log.d(TAG, message, throwables[0]);
         } else {
             Log.d(TAG, message);
