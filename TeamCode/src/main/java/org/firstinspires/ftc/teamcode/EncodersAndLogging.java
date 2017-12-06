@@ -34,9 +34,12 @@ import android.util.Log;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "1 foot auto  shift", group = "Robosapiens")
+
+@Autonomous(name = "3 foot auto 90 degree turn #2", group = "Robosapiens")
 public class EncodersAndLogging extends LinearOpMode {
 
     private static final String TAG = "ENCODERS";
@@ -54,15 +57,19 @@ public class EncodersAndLogging extends LinearOpMode {
         try {
             initialize();
             waitForStart();
-        //    moveForwardBy(24.0);
+            //push the ball
+            pushball();
+            //go forward 2 feet
+            moveForwardBy(36.0);
+            //turn 90 %
+            turnBy(19);
 
-         //   sleep(5000);
+            sleep(2000);
 
-            moveLateralBy(24.0);
+            //shift 12 inches
+            moveLateralBy(12.0);
 
-          //  sleep(5000);
 
-          //  moveForwardBy(24.0);
             log("Program Complete");
         } finally {
             robot.resetMotors();
@@ -71,13 +78,13 @@ public class EncodersAndLogging extends LinearOpMode {
 
     private void moveForwardBy(double inches) {
         encoderForward(DRIVE_SPEED, inches);
-        moveForUpTo(3.0);
+        moveForUpTo(5.0);
         robot.resetMotors();
     }
 
     private void moveLateralBy(double inches) {
         encoderLateral(DRIVE_SPEED, inches);
-        moveForUpTo(3.0);
+        moveForUpTo(5.0);
         robot.resetMotors();
     }
 
@@ -88,7 +95,59 @@ public class EncodersAndLogging extends LinearOpMode {
         logEncoderPosition();
     }
 
-    /*
+    private void turnBy(double inches) {
+        encoderTurn(TURN_SPEED, inches);
+        moveForUpTo(3.0);
+        robot.resetMotors();
+    }
+    private void pushball(){
+        //puts down servo (color holder)
+        robot.colorHolder.setPosition(MyHardwarePushbot.MID_SERVO);
+        //stops for 2 seconds
+        sleep(2000);
+
+        NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
+       // if red ball, do this
+        if(isRed(colors)){
+            //goes forward
+            turnBy(-9.0);
+
+            //stops 2 sec
+            sleep(2000);
+
+            //puts up color holder
+            robot.colorHolder.setPosition(MyHardwarePushbot.MIN_SERVO);
+
+            //stops 2 sec
+            sleep(2000);
+
+            turnBy(9.0);
+
+        } else if(isBlue(colors)){//if blue ball
+            //goes back
+            moveForwardBy(5.0);
+
+            //stops for 2 sec
+            sleep(2000);
+
+            //puts up color holder
+            robot.colorHolder.setPosition(MyHardwarePushbot.MIN_SERVO);
+
+            //stops 2 sec
+            sleep(2000);
+
+            //goes forward 6
+            moveForwardBy(-5.0);
+
+            //stop 2 sec
+            sleep(2000);
+        }else{
+            //did not find red or blue raise the color sensor holder and move on
+            robot.colorHolder.setPosition(MyHardwarePushbot.MIN_SERVO);
+        }
+
+    }
+      /*
      *  Method to perfmorm a relative move, based on encoder counts.
      *  Encoders are not reset as the move is based on the current position.
      *  Move will stop if any of three conditions occur:
@@ -120,6 +179,28 @@ public class EncodersAndLogging extends LinearOpMode {
             setToMoveAt(speed);
         }
     }
+    public void encoderTurn(double speed,
+                            double inches){
+        if (opModeIsActive()){
+            robot.leftbackDrive.setDirection(DcMotor.Direction.FORWARD);
+            robot.rightbackDrive.setDirection(DcMotor.Direction.REVERSE);
+            robot.leftDrive.setDirection(DcMotor.Direction.FORWARD);
+            robot.rightDrive.setDirection(DcMotor.Direction.REVERSE);
+            setToTurnBy(inches, LATERAL_ENCODER_COUNTS_PER_INCH);
+            setToMoveAt(speed);
+
+        }
+    }
+
+    public boolean isRed(NormalizedRGBA colors){
+
+        return colors.red > colors.blue  && colors.red > colors.green && colors.blue >= 0.001 && colors.green >= 0.001;
+    }
+
+    public boolean isBlue(NormalizedRGBA colors){
+
+        return colors.blue > colors.red && colors.blue >= colors.green;
+    }
 
     private void setToMoveBy(double inches, double encoderCountsPerInch) {
         log("Starting Encoder Position");
@@ -130,6 +211,27 @@ public class EncodersAndLogging extends LinearOpMode {
         int newRightbackTarget = robot.rightbackDrive.getCurrentPosition() + (int) (inches * encoderCountsPerInch);
 
         // Turn On RUN_TO_POSITION
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.leftbackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightbackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.leftDrive.setTargetPosition(newLeftTarget);
+        robot.rightDrive.setTargetPosition(newRightTarget);
+        robot.leftbackDrive.setTargetPosition(newLeftbackTarget);
+        robot.rightbackDrive.setTargetPosition(newRightbackTarget);
+        logEncoderTargetPosition();
+    }
+
+
+    private void setToTurnBy(double inches, double encoderCountsPerInch) {
+        log("Starting Encoder Position");
+        logEncoderPosition();
+        int newLeftTarget = robot.leftDrive.getCurrentPosition() + (int) (-inches * encoderCountsPerInch);
+        int newRightTarget = robot.rightDrive.getCurrentPosition() + (int) (inches * encoderCountsPerInch);
+        int newLeftbackTarget = robot.leftbackDrive.getCurrentPosition() + (int) (-inches * encoderCountsPerInch);
+        int newRightbackTarget = robot.rightbackDrive.getCurrentPosition() + (int) (inches * encoderCountsPerInch);
+
         robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.leftbackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);

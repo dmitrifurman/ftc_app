@@ -31,7 +31,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 /**
  * This is NOT an opmode.
@@ -56,10 +59,13 @@ public class MyHardwarePushbot {
     public DcMotor leftbackDrive = null;
     public DcMotor rightbackDrive = null;
     public Servo colorHolder = null;
+    /** The colorSensor field will contain a reference to our color sensor hardware object */
+    NormalizedColorSensor colorSensor;
+
     //public DcMotor  leftArm     = null;
     //public Servo    leftClaw    = null;
     //public Servo    rightClaw   = null;
-    public static final double Min_servo = 0;
+    public static final double MIN_SERVO = 0;
     public static final double MID_SERVO = 0.5;
     public static final double ARM_UP_POWER = 0.45;
     public static final double ARM_DOWN_POWER = -0.45;
@@ -84,6 +90,15 @@ public class MyHardwarePushbot {
         rightbackDrive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
         colorHolder.setDirection(Servo.Direction.FORWARD);
+        // Get a reference to our sensor object.
+        colorSensor = hwMap.get(NormalizedColorSensor.class, "sensor_color");
+
+        // If possible, turn the light on in the beginning (it might already be on anyway,
+        // we just make sure it is if we can).
+        if (colorSensor instanceof SwitchableLight) {
+            ((SwitchableLight)colorSensor).enableLight(true);
+        }
+
         // Set all motors to zero power
         resetMotors();
 
@@ -93,7 +108,7 @@ public class MyHardwarePushbot {
         //rightClaw = hwMap.get(Servo.class, "right_hand");
         //leftClaw.setPosition(MID_SERVO);
         //rightClaw.setPosition(MID_SERVO);
-    colorHolder.setPosition(Min_servo);
+        colorHolder.setPosition(MIN_SERVO);
     }
 
     public void resetMotors() {
@@ -102,5 +117,6 @@ public class MyHardwarePushbot {
         leftbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+
 }
 
