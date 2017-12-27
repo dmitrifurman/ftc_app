@@ -30,12 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -54,18 +49,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
-public class HardwarePushbot
+public class motor_names
 {
     /* Public OpMode members. */
     public DcMotor  leftDrive   = null;
     public DcMotor  rightDrive  = null;
     public DcMotor  leftbackDrive   = null;
     public DcMotor  rightbackDrive  = null;
-    NormalizedColorSensor colorSensor;
-    public Servo colorHolder = null;
-    public static final double MAX = 0.0;     // Maximum rotational position
-    public static final double MIN = 0.5;
-    private double positionHold = (MAX - MIN) / 2;
     //public DcMotor  leftArm     = null;
     //public Servo    leftClaw    = null;
     //public Servo    rightClaw   = null;
@@ -79,7 +69,7 @@ public class HardwarePushbot
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public HardwarePushbot(){
+    public motor_names(){
 
     }
 
@@ -88,21 +78,12 @@ public class HardwarePushbot
         // Save reference to Hardware map
         hwMap = ahwMap;
 
-        // Define and Initialize Motor
+        // Define and Initialize Motors
         leftDrive  = hwMap.get(DcMotor.class, "left_drive");
         rightDrive = hwMap.get(DcMotor.class, "right_drive");
         leftbackDrive  = hwMap.get(DcMotor.class, "leftback_drive");
         rightbackDrive = hwMap.get(DcMotor.class, "rightback_drive");
-        colorSensor = hwMap.get(NormalizedColorSensor.class, "sensor_color");
-        colorHolder = hwMap.get(Servo.class, "colorHolder");
-        // If possible, turn the light on in the beginning (it might already be on anyway,
-        // we just make sure it is if we can).
-        if (colorSensor instanceof SwitchableLight) {
-            ((SwitchableLight)colorSensor).enableLight(true);
-        }
-
         //leftArm    = hwMap.get(DcMotor.class, "left_arm");
-        colorHolder.setDirection(Servo.Direction.FORWARD);
         leftDrive.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         rightbackDrive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
@@ -125,11 +106,8 @@ public class HardwarePushbot
         // Define and initialize ALL installed servos.
         //leftClaw  = hwMap.get(Servo.class, "left_hand");
         //rightClaw = hwMap.get(Servo.class, "right_hand");
-
-
-
-        // Read the sensor
-        NormalizedRGBA colors = colorSensor.getNormalizedColors();
+        //leftClaw.setPosition(MID_SERVO);
+        //rightClaw.setPosition(MID_SERVO);
     }
  }
 

@@ -31,10 +31,8 @@ package org.firstinspires.ftc.teamcode;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.renderscript.Sampler;
 import android.view.View;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -53,7 +51,7 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@TeleOp(name = "auto blue", group = "Sensor")
+@TeleOp(name = "auto red", group = "Sensor")
 //@Disabled
 public class SensorColor extends LinearOpMode {
   private DcMotor leftDrive = null;
@@ -141,19 +139,7 @@ public class SensorColor extends LinearOpMode {
     // Loop until we are asked to stop
     while (opModeIsActive()) {
       // Check the status of the x button on the gamepad
-      bCurrState = gamepad1.x;
 
-      // If the button state is different than what it was, then act
-      if (bCurrState != bPrevState) {
-        // If the button is (now) down, then toggle the light
-        if (bCurrState) {
-          if (colorSensor instanceof SwitchableLight) {
-            SwitchableLight light = (SwitchableLight)colorSensor;
-            light.enableLight(!light.isLightOn());
-          }
-        }
-      }
-      bPrevState = bCurrState;
 
       // Read the sensor
       NormalizedRGBA colors = colorSensor.getNormalizedColors();
@@ -178,18 +164,10 @@ public class SensorColor extends LinearOpMode {
         boolean isBlue = colors.blue > 0.017 && colors.red < 0.009 && colors.green < 0.012;
 
         telemetry.addData("isred", isRed);
+      telemetry.addData("isblue", isBlue);
         telemetry.update();
 
-        if(isRed){
-            handleDrive(.25,.25);
-            Thread.sleep(500);
 
-        } else if (isBlue) {
-            handleDrive(-.25,-.25);
-            Thread.sleep(500);
-        } else {
-            handleDrive(0, 0);
-        }
 
       /** We also display a conversion of the colors to an equivalent Android color integer.
        * @see Color */
@@ -241,35 +219,6 @@ public class SensorColor extends LinearOpMode {
     }
   }
 
-  private void handleDrive(double leftPower, double rightPower) {
 
-    telemetry.update();
-    // Setup a variable for each drive wheel to save power level for telemetry
-    //double leftPower = 0.25;
-    //double rightPower = 0.25;
-
-
-
-    // Send calculated power to wheels
-    leftDrive.setPower(leftPower);
-    rightDrive.setPower(rightPower);
-
-  }
-
-  private void handlereverse() {
-
-    telemetry.update();
-    // Setup a variable for each drive wheel to save power level for telemetry
-    double reverseleftPower = -0.25;
-    double rightreversePower = -0.25;
-
-
-
-    // Send calculated power to wheels
-    leftDrive.setPower(reverseleftPower);
-    rightDrive.setPower(rightreversePower);
-
-
-  }
 }
 
