@@ -51,6 +51,9 @@ public class EncodersAndLogging extends LinearOpMode {
     static final double LATERAL_ENCODER_COUNTS_PER_INCH = 141.15;
     static final double DRIVE_SPEED = 0.6;
     static final double TURN_SPEED = 0.5;
+    static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
+    static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
+    static final double     P_DRIVE_COEFF           = 0.15;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -110,7 +113,7 @@ public class EncodersAndLogging extends LinearOpMode {
        // if red ball, do this
         if(isRed(colors)){
             //goes forward
-            turnBy(-9.0);
+            turnBy(9.0);
 
             //stops 2 sec
             sleep(2000);
@@ -121,7 +124,7 @@ public class EncodersAndLogging extends LinearOpMode {
             //stops 2 sec
             sleep(2000);
 
-            turnBy(9.0);
+            turnBy(-9.0);
 
         } else if(isBlue(colors)){//if blue ball
             //goes back

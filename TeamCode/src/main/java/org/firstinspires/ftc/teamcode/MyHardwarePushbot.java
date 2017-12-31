@@ -118,5 +118,18 @@ public class MyHardwarePushbot {
         rightbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
+    public void stopMotion() {
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftbackDrive.setPower(0);
+        rightbackDrive.setPower(0);
+    }
+
+    public void setRunUsingEncoder() {
+        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 }
 

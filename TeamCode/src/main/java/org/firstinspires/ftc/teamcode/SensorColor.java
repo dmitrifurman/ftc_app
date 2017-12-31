@@ -174,23 +174,13 @@ public class SensorColor extends LinearOpMode {
               .addData("g", "%.3f", colors.green)
               .addData("b", "%.3f", colors.blue);
 
-        boolean isRed = colors.red > 0.017 && colors.blue < 0.009 && colors.green < 0.009;
-        boolean isBlue = colors.blue > 0.017 && colors.red < 0.009 && colors.green < 0.012;
+        boolean isRed = colors.red > colors.blue * 1.33 && colors.red > colors.green * 1.33;
+        boolean isBlue = colors.blue > colors.red && colors.blue > colors.green;
 
         telemetry.addData("isred", isRed);
         telemetry.update();
-
-        if(isRed){
-            handleDrive(.25,.25);
-            Thread.sleep(500);
-
-        } else if (isBlue) {
-            handleDrive(-.25,-.25);
-            Thread.sleep(500);
-        } else {
-            handleDrive(0, 0);
-        }
-
+        telemetry.addData("isblue", isBlue);
+        telemetry.update();
       /** We also display a conversion of the colors to an equivalent Android color integer.
        * @see Color */
       int color = colors.toColor();
