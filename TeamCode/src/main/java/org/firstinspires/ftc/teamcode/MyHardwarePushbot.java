@@ -58,7 +58,14 @@ public class MyHardwarePushbot {
     public DcMotor rightDrive = null;
     public DcMotor leftbackDrive = null;
     public DcMotor rightbackDrive = null;
-    public Servo colorHolder = null;
+    public DcMotor elevator = null;
+    public DcMotor spinner = null;
+    public Servo grableft;
+    public Servo grabright;
+    public static final double MAX_GRAB = 0.775;     // Maximum rotational position
+    public static final double MIN_GRAB = 0.0;
+
+
     /** The colorSensor field will contain a reference to our color sensor hardware object */
     NormalizedColorSensor colorSensor;
 
@@ -83,13 +90,26 @@ public class MyHardwarePushbot {
         rightDrive = hwMap.get(DcMotor.class, "right_drive");
         leftbackDrive = hwMap.get(DcMotor.class, "leftback_drive");
         rightbackDrive = hwMap.get(DcMotor.class, "rightback_drive");
-        colorHolder = hwMap.get(Servo.class, "colorHolder");
+        spinner = hwMap.get(DcMotor.class, "spin");
+
+        elevator = hwMap.get(DcMotor.class, "elevator");
+        grableft = hwMap.get(Servo.class, "grableft");
+        grabright = hwMap.get(Servo.class, "grabright");
+        grableft.resetDeviceConfigurationForOpMode();
+        grabright.resetDeviceConfigurationForOpMode();
         //leftArm    = hwMap.get(DcMotor.class, "left_arm");
         leftDrive.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         rightbackDrive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
-        colorHolder.setDirection(Servo.Direction.FORWARD);
+        elevator.setDirection(DcMotor.Direction.FORWARD);
+        spinner.setDirection(DcMotor.Direction.FORWARD);
+
+        grabright.setDirection(Servo.Direction.REVERSE);
+        grableft.setDirection(Servo.Direction.FORWARD);
+
+
+
         // Get a reference to our sensor object.
         colorSensor = hwMap.get(NormalizedColorSensor.class, "sensor_color");
 
@@ -108,7 +128,7 @@ public class MyHardwarePushbot {
         //rightClaw = hwMap.get(Servo.class, "right_hand");
         //leftClaw.setPosition(MID_SERVO);
         //rightClaw.setPosition(MID_SERVO);
-        colorHolder.setPosition(MIN_SERVO);
+
     }
 
     public void resetMotors() {

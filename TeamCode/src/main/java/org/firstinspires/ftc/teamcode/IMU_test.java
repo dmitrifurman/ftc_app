@@ -81,7 +81,7 @@ import java.util.Locale;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Pushbot: Auto Drive By Gyro and IMU2", group="Pushbot")
+@Autonomous(name="Pushbot: Auto Drive By grabber, Gyro and IMU", group="Pushbot")
 //@Disabled
 public class IMU_test extends LinearOpMode {
 
@@ -171,31 +171,35 @@ public class IMU_test extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
+        grab();
+        sleep(1000);
+        lift(1);
+        sleep(1000);
 
 
         gyroDrive(DRIVE_SPEED, 24.0, 0.0);    // Drive FWD 48 inches
 
         sleep(1000);
-        gyroDrive(DRIVE_SPEED, 24.0, 45.0);    // Drive FWD 48 inches
+        //gyroDrive(DRIVE_SPEED, 12.0, 0.0);    // Drive FWD 48 inches
         //angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        sleep(1000);
-        gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
-        //angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        sleep(1000);
-        gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
-        sleep(1000);
-        gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
-        sleep(1000);
-        gyroDrive(DRIVE_SPEED, 12.0, -45.0);  // Drive FWD 12 inches at 45 degrees
-        sleep(1000);
-        gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
-        sleep(1000);
-        gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
 
-        gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
-        gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
+        gyroTurn( TURN_SPEED, -90.0);         // Turn  CCW to -45 Degrees
+        //angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+       // gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
+             // Turn  CW  to  45 Degrees
+        sleep(1000);
+        gyroDrive(DRIVE_SPEED, 24.0, 0.0);  // Drive FWD 12 inches at 45 degrees
+        sleep(1000);
+        gyroTurn( TURN_SPEED,  90.0);         // Turn  CW  to  45 Degrees
+        sleep(1000);
+   // Hold  45 Deg heading for a 1/2 second
+ // Hold  0 Deg heading for a 1 second
         gyroDrive(DRIVE_SPEED,-12.0, 0.0);    // Drive REV 48 inches
-
+        sleep(1000);
+        drop();
+        sleep(1000);
+        relese(3);
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
@@ -282,6 +286,7 @@ public class IMU_test extends LinearOpMode {
                 robot.leftbackDrive.setPower(leftSpeed);
                 robot.rightbackDrive.setPower(rightSpeed);
 
+
                 // Display drive status for the driver.
                 telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
                 telemetry.addData("Target",  "%7d:%7d",      newLeftTarget,  newRightTarget);
@@ -303,11 +308,19 @@ public class IMU_test extends LinearOpMode {
      *  1) Move gets to the heading (angle)
      *  2) Driver stops the opmode running.
      *
-     * @param speed Desired speed of turn.
-     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
+
      *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                   If a relative angle is required, add/subtract from current heading.
      */
+    public void grab (){
+        robot.grableft.setPosition(robot.MAX_GRAB);
+        robot.grabright.setPosition(robot.MAX_GRAB);
+    }
+    public void drop (){
+        robot.grableft.setPosition(robot.MIN_GRAB);
+        robot.grabright.setPosition(robot.MIN_GRAB);
+    }
+
     public void gyroTurn (  double speed, double angle) {
 
         // keep looping while we are still active, and not on heading.
@@ -348,7 +361,12 @@ public class IMU_test extends LinearOpMode {
         // Stop all motion;
         robot.stopMotion();
     }
-
+    public void lift (double holdtime){
+        robot.elevator.setPower(0.75);
+    }
+    public void relese (double holdtime){
+        robot.elevator.setPower(-0.15);
+    }
     /**
      * Perform one cycle of closed loop heading control.
      *
