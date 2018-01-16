@@ -32,12 +32,19 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "blue bottom", group = "Pushbot")
+
+@Autonomous(name="blue top", group="Pushbot")
 //@Disabled
-public class blue_bottom extends AutoBase {
+public class blue_top extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
+
+        /*
+         * Initialize the standard drive system variables.
+         * The init() method of the hardware class does most of the work here
+         */
+
         robot.spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.spinner.setPower(0);
         robot.colorHolder.setPosition(robot.MAX_GRAB);
@@ -50,26 +57,28 @@ public class blue_bottom extends AutoBase {
         sleep(1000);
         blueColorArm();
         sleep(1000);
-        double boxAngle = 0;
+ /*       double boxAngle = 0;
         switch (readRelic()) {
             case UNKNOWN:
                 log("unknown");
-                boxAngle = 95.0;
+                boxAngle = 0.0;
                 break;
             case LEFT:
                 log("left");
-                boxAngle = 135.0;
+                boxAngle = 46.0;
                 break;
             case CENTER:
                 log("middle");
-                boxAngle = 112.0;
+                boxAngle = 23.0;
                 break;
             case RIGHT:
                 log("right");
-                boxAngle = 95.0;
+                boxAngle = 0.0;
                 break;
         }
-      /*  spin(TURN_SPEED, -180);
+
+        //spin(-0.5, 1);
+        spin(TURN_SPEED, -180);
         sleep(1000);
         robot.colorHolder.setPosition(robot.MID_SERVO);
         sleep(1000);
@@ -85,38 +94,28 @@ public class blue_bottom extends AutoBase {
             gyroTurn( TURN_SPEED,  45.0);
         }
         sleep(250);*/
+        straitDrive(DRIVE_SPEED, -24.0);
         sleep(500);
-        //    robot.colorHolder.setPosition(robot.MID_SERVO);
-        // sleep(1000);
-        straitDrive(DRIVE_SPEED, -35.0);
-        // Drive FWD 48 inches
-
-        sleep(500);
-
-        //spin(-0.5, 0.25);
-        //sleep(1000);
-        //gyroDrive(DRIVE_SPEED, 12.0, 0.0);    // Drive FWD 48 inches
-        //angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        //gyroDrive(DRIVE_SPEED, -12, 0.0);
-        // Turn  CW  to  45 Degrees
-
-        // Hold  45 Deg heading for a 1/2 secon
-        gyroTurn(TURN_SPEED, boxAngle);
-        // Drive REV 48 inches
+shiftDrive(DRIVE_SPEED, -6.0);
+sleep(500);
+        gyroTurn(TURN_SPEED, 360.0);
         sleep(500);
         relese(2.0);
         sleep(500);
-        straitDrive(DRIVE_SPEED, -12.0);
-
-        sleep(500);
         //sleep(1000);
-        drop();
-        sleep(500);
 
-        straitDrive(DRIVE_SPEED, 7.0);
+        sleep(500);
+        straitDrive(DRIVE_SPEED, -20.0);
+
+        sleep(500);
+        drop();
+
+sleep(500);
+       straitDrive(DRIVE_SPEED, 5.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
+
+
 }
