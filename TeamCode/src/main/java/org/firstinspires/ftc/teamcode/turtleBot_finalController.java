@@ -67,14 +67,17 @@ public class turtleBot_finalController extends LinearOpMode {
     private DcMotor spinner = null;
     private Servo grableft;
     private Servo grabright;
-    private static final double MAX_GRAB = 0.775;     // Maximum rotational position
-    private static final double MIN_GRAB = 0.0;
-    boolean isItOpen = false;
+    // Maximum rotational position
+
+    boolean isrightOpe = false;
+    boolean isleftOpen = false;
+    double leftPos = 0.1;
+    double rightpos = 0.1;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
+    double SPEED = 1.0;
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
@@ -123,31 +126,52 @@ public class turtleBot_finalController extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = gamepad1.left_stick_y;
-            double turn = gamepad1.left_stick_x;
-            double spin = gamepad2.left_stick_x;
+            double driveRight = gamepad1.right_stick_y;
+            double driveLeft = gamepad1.left_stick_y;
+            //double turn = gamepad1.left_stick_x;
+            boolean spinright = gamepad2.b;
             double shift = gamepad1.right_stick_x;
-            double lift = gamepad2.left_stick_y;
+            boolean lift = gamepad2.y;
+            boolean drop = gamepad2.a;
+            double shiftLeft = gamepad1.left_stick_x;
+            double shiftRight = gamepad1.right_stick_x;
+            double leftgrab = gamepad2.left_stick_x;
+            double rightgrab = gamepad2.right_stick_x;
+            boolean spinleft = gamepad2.x;
 
-            boolean grab = gamepad2.a;
-
-            if (drive > 0.5){
-                leftDrive.setPower(0.5);
-                rightDrive.setPower(0.5);
-                leftbackDrive.setPower(0.5);
-                rightbackDrive.setPower(0.5);
-            } else if (drive < -0.5){
-                leftDrive.setPower(-0.5);
-                rightDrive.setPower(-0.5);
-                leftbackDrive.setPower(-0.5);
-                rightbackDrive.setPower(-0.5);
+            if (driveRight > 0.5){
+                //leftDrive.setPower(0.5);
+                rightDrive.setPower(SPEED);
+                //leftbackDrive.setPower(0.5);
+                rightbackDrive.setPower(SPEED);
+            } else if (driveRight < -0.5){
+                //leftDrive.setPower(-0.5);
+                rightDrive.setPower(-SPEED);
+                //leftbackDrive.setPower(-0.5);
+                rightbackDrive.setPower(-SPEED);
             } else {
-                leftDrive.setPower(0);
+                //leftDrive.setPower(0);
                 rightDrive.setPower(0);
-                leftbackDrive.setPower(0);
+                //leftbackDrive.setPower(0);
                 rightbackDrive.setPower(0);
             }
-            if (turn > 0.5){
+            if (driveLeft > 0.5){
+                leftDrive.setPower(SPEED);
+                //rightDrive.setPower(0.5);
+                leftbackDrive.setPower(SPEED);
+                //rightbackDrive.setPower(0.5);
+            } else if (driveLeft < -0.5){
+                leftDrive.setPower(-SPEED);
+                //rightDrive.setPower(-0.5);
+                leftbackDrive.setPower(-SPEED);
+                //rightbackDrive.setPower(-0.5);
+            } else {
+                leftDrive.setPower(0);
+                //rightDrive.setPower(0);
+                leftbackDrive.setPower(0);
+                //rightbackDrive.setPower(0);
+            }
+            /*if (turn > 0.5){
                 leftDrive.setPower(0.5);
                 rightDrive.setPower(-0.5);
                 leftbackDrive.setPower(0.5);
@@ -162,66 +186,215 @@ public class turtleBot_finalController extends LinearOpMode {
                 rightDrive.setPower(0);
                 leftbackDrive.setPower(0);
                 rightbackDrive.setPower(0);
-            }
+            }*/
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
             // rightPower = -gamepad1.right_stick_y ;
 //motor derection for shifting
-            if (lift < 0) {
-                elevator.setPower(0.5);
-            } else if (lift > 0) {
+            if (lift && !drop) {
+                elevator.setPower(0.75);
+            } else if (!lift && drop) {
                 elevator.setPower(-0.15);
-            } else {
+            } else if ((!lift && !drop) || (lift && drop)){
+                elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 elevator.setPower(0);
             }
 
-            if (grab && isItOpen) {
-                grabright.setPosition(MIN_GRAB);
+          /*  if (leftgrab < -0.5 && isleftOpen) {
+                //grabright.setPosition(MIN_GRAB);
                 grableft.setPosition(MIN_GRAB);
-                isItOpen = false;
+                isleftOpen = false;
                 Log.d("Turtle", "Grab Left: "+ grableft.getPosition());
                 Log.d("Turtle", "Grab Right: "+ grabright.getPosition());
                 Log.d("Turtle", "Grab Left Controller: "+ grableft.getController().getServoPosition(0));
                 Log.d("Turtle", "Grab Right Controller: "+ grabright.getController().getServoPosition(1));
-            } else if (grab && !isItOpen){
-                grabright.setPosition(MAX_GRAB);
+            } else if (leftgrab > 0.5 && !isleftOpen){
+                //grabright.setPosition(MAX_GRAB);
                 grableft.setPosition(MAX_GRAB);
-                isItOpen =  true;
+                isleftOpen =  true;
+                Log.d("Turtle", "Drop Left: "+ grableft.getPosition());
+                Log.d("Turtle", "Drop Right: "+ grabright.getPosition());
+                Log.d("Turtle", "Drop Left Controller: "+ grableft.getController().getServoPosition(0));
+                Log.d("Turtle", "Drop Right Controller: "+ grabright.getController().getServoPosition(1));
+            }
+            if (rightgrab < -0.5 && isrightOpen) {
+                grabright.setPosition(MAX_GRAB);
+                //grableft.setPosition(MIN_GRAB);
+                isrightOpen = false;
+                Log.d("Turtle", "Grab Left: "+ grableft.getPosition());
+                Log.d("Turtle", "Grab Right: "+ grabright.getPosition());
+                Log.d("Turtle", "Grab Left Controller: "+ grableft.getController().getServoPosition(0));
+                Log.d("Turtle", "Grab Right Controller: "+ grabright.getController().getServoPosition(1));
+            } else if (rightgrab > 0.5 && !isrightOpen){
+                grabright.setPosition(MIN_GRAB);
+                //grableft.setPosition(MAX_GRAB);
+                isrightOpen =  true;
+                Log.d("Turtle", "Drop Left: "+ grableft.getPosition());
+                Log.d("Turtle", "Drop Right: "+ grabright.getPosition());
+                Log.d("Turtle", "Drop Left Controller: "+ grableft.getController().getServoPosition(0));
+                Log.d("Turtle", "Drop Right Controller: "+ grabright.getController().getServoPosition(1));
+            }*/
+
+          /*
+            // Open left side
+            while (leftgrab < -0.5 && leftPos > 0.0) {
+                leftPos = leftPos - 0.01;                //grabright.setPosition(MIN_GRAB);
+                grableft.setPosition(leftPos);
+
+                Log.d("Turtle", "Grab Left: "+ grableft.getPosition());
+                Log.d("Turtle", "Grab Right: "+ grabright.getPosition());
+                Log.d("Turtle", "Grab Left Controller: "+ grableft.getController().getServoPosition(0));
+                Log.d("Turtle", "Grab Right Controller: "+ grabright.getController().getServoPosition(1));
+            }
+
+            // Close left side
+            while (leftgrab > 0.5 && leftPos < 1.0){
+                //grabright.setPosition(MAX_GRAB);
+                leftPos = leftPos + 0.01;
+                grableft.setPosition(leftPos);
+
                 Log.d("Turtle", "Drop Left: "+ grableft.getPosition());
                 Log.d("Turtle", "Drop Right: "+ grabright.getPosition());
                 Log.d("Turtle", "Drop Left Controller: "+ grableft.getController().getServoPosition(0));
                 Log.d("Turtle", "Drop Right Controller: "+ grabright.getController().getServoPosition(1));
             }
 
-            if (spin > 0){
-                spinner.setPower(0.5);
-            } else if (spin < 0){
-                spinner.setPower(-0.5);
-            } else {
-                spinner.setPower(0);
-            }
-            if (shift < -0.5) {
-                leftDrive.setPower(-0.5);
-                rightDrive.setPower(-0.5);
-                leftbackDrive.setPower(0.5);
-                rightbackDrive.setPower(0.5);
-                //motor derection for regular movement
-            } else if (shift > 0.5) {
-                leftDrive.setPower(0.5);
-                rightDrive.setPower(0.5);
-                leftbackDrive.setPower(-0.5);
-                rightbackDrive.setPower(-0.5);
-            } else {
-                leftDrive.setPower(0);
-                rightDrive.setPower(0);
-                leftbackDrive.setPower(0);
-                rightbackDrive.setPower(0);
+            // Closed right side
+            while (rightgrab < -0.5 && rightpos < 1.0) {
+                rightpos = rightpos + 0.01;
+                grabright.setPosition(rightpos);
+                //grableft.setPosition(MIN_GRAB);
+
+                Log.d("Turtle", "Grab Left: "+ grableft.getPosition());
+                Log.d("Turtle", "Grab Right: "+ grabright.getPosition());
+                Log.d("Turtle", "Grab Left Controller: "+ grableft.getController().getServoPosition(0));
+                Log.d("Turtle", "Grab Right Controller: "+ grabright.getController().getServoPosition(1));
             }
 
+            // Open right side
+            while (rightgrab > 0.5 && rightpos > 0.1){
+                rightpos = rightpos - 0.01;
+                grabright.setPosition(rightpos);
+                //grableft.setPosition(MAX_GRAB);
+
+                Log.d("Turtle", "Drop Left: "+ grableft.getPosition());
+                Log.d("Turtle", "Drop Right: "+ grabright.getPosition());
+                Log.d("Turtle", "Drop Left Controller: "+ grableft.getController().getServoPosition(0));
+                Log.d("Turtle", "Drop Right Controller: "+ grabright.getController().getServoPosition(1));
+            }
+            */
+
+            while(leftgrab > 0.5 && rightgrab < -0.5) {
+                closeLeftGrabSide();
+                closeRightGrabSide();
+                leftgrab = gamepad2.left_stick_x;
+                rightgrab = gamepad2.right_stick_x;
+            }
+
+            while(leftgrab < -0.5 && rightgrab > 0.5) {
+                openLeftGrabSide();
+                openRightGrabSide();
+                leftgrab = gamepad2.left_stick_x;
+                rightgrab = gamepad2.right_stick_x;
+            }
+
+            // Open left side
+            while (leftgrab < -0.5 && ((rightgrab > -0.5) && (rightgrab < 0.5))) {
+                openLeftGrabSide();
+                leftgrab = gamepad2.left_stick_x;
+                rightgrab = gamepad2.right_stick_x;
+            }
+
+            // Close left side
+            while (leftgrab > 0.5 && ((rightgrab > -0.5) && (rightgrab < 0.5))){
+                //grabright.setPosition(MAX_GRAB);
+                closeLeftGrabSide();
+                leftgrab = gamepad2.left_stick_x;
+                rightgrab = gamepad2.right_stick_x;
+            }
+
+            // Closed right side
+            while (rightgrab < -0.5 && ((leftgrab > -0.5) && (leftgrab < 0.5))) {
+                closeRightGrabSide();
+                leftgrab = gamepad2.left_stick_x;
+                rightgrab = gamepad2.right_stick_x;
+            }
+
+            // Open right side
+            while (rightgrab > 0.5 && ((leftgrab > -0.5) && (leftgrab < 0.5))){
+                openRightGrabSide();
+                leftgrab = gamepad2.left_stick_x;
+                rightgrab = gamepad2.right_stick_x;
+            }
+
+            if (spinright && !spinleft){
+                spinner.setPower(0.5);
+            } else if (spinleft && !spinright){
+                spinner.setPower(-0.5);
+            } else if ((!spinleft && !spinright) || (spinleft && spinright)){
+                spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                spinner.setPower(0);
+            }
+            if (shiftRight > 0.5){
+                //leftDrive.setPower(0.5);
+                rightDrive.setPower(-SPEED);
+                //leftbackDrive.setPower(0.5);
+                rightbackDrive.setPower(SPEED);
+            } else if (shiftRight < -0.5){
+                //leftDrive.setPower(-0.5);
+                rightDrive.setPower(SPEED);
+                //leftbackDrive.setPower(-0.5);
+                rightbackDrive.setPower(-SPEED);
+            } else {
+                //leftDrive.setPower(0);
+                rightDrive.setPower(0);
+                //leftbackDrive.setPower(0);
+                rightbackDrive.setPower(0);
+            }
+            if (shiftLeft > 0.5){
+                leftDrive.setPower(SPEED);
+                //rightDrive.setPower(0.5);
+                leftbackDrive.setPower(-SPEED);
+                //rightbackDrive.setPower(0.5);
+            } else if (shiftLeft < -0.5){
+                leftDrive.setPower(-SPEED);
+                //rightDrive.setPower(-0.5);
+                leftbackDrive.setPower(SPEED);
+                //rightbackDrive.setPower(-0.5);
+            } else {
+                leftDrive.setPower(0);
+                //rightDrive.setPower(0);
+                leftbackDrive.setPower(0);
+                //rightbackDrive.setPower(0);
+            }
 
 
         }
+    }
+
+    private void openRightGrabSide() {
+        double currentGrabRightPosition = grabright.getPosition();
+        double newGrabRightPosition = currentGrabRightPosition-0.01;
+        grabright.setPosition(newGrabRightPosition);
+    }
+
+    private void closeRightGrabSide() {
+        double currentGrabRightPosition = grabright.getPosition();
+        double newGrabRightPosition = currentGrabRightPosition+0.01;
+        grabright.setPosition(newGrabRightPosition);
+    }
+
+    private void closeLeftGrabSide() {
+        double currentGrabLeftPosition = grableft.getPosition();
+        double newGrabLeftPosition = currentGrabLeftPosition+0.01;
+        grableft.setPosition(newGrabLeftPosition);
+    }
+
+    private void openLeftGrabSide() {
+        double currentGrabLeftPosition = grableft.getPosition();
+        double newGrabLeftPosition = currentGrabLeftPosition-0.01;
+        grableft.setPosition(newGrabLeftPosition);
     }
 }
