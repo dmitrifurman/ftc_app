@@ -95,10 +95,10 @@ public class blue_top extends AutoBase {
         }
         sleep(250);*/
         straitDrive(DRIVE_SPEED, -24.0);
-        sleep(500);
-shiftDrive(DRIVE_SPEED, -6.0);
-sleep(500);
-        gyroTurn(TURN_SPEED, 360.0);
+        sleep(1000);
+   //     shiftDrive(DRIVE_SPEED, -6.0);
+     //   sleep(500);
+        gyroTurn(TURN_SPEED, -10.0);
         sleep(500);
         relese(2.0);
         sleep(500);

@@ -33,7 +33,7 @@ import java.util.Locale;
  */
 
 public abstract class AutoBase extends LinearOpMode {
-//start at ~25'
+    //start at ~25'
     /* Declare OpMode members. */
     MyHardwarePushbot robot = new MyHardwarePushbot();   // Use a Pushbot's hardware
     //ModernRoboticsI2cGyro   gyro    = null;                    // Additional Gyro device
@@ -114,11 +114,11 @@ public abstract class AutoBase extends LinearOpMode {
     private void initGyro() {
         //gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
@@ -130,60 +130,62 @@ public abstract class AutoBase extends LinearOpMode {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         telemetry.addData(">", "Calibrating Gyro");
-        telemetry.addData( "is calibrated", imu.isGyroCalibrated());
+        telemetry.addData("is calibrated", imu.isGyroCalibrated());
         telemetry.update();
     }
-    public void stopElevator(){
+
+    public void stopElevator() {
         robot.elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public void readColor(){
+    public void readColor() {
 
         NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
         //rightClaw.setPosition(MID_SERVO);
 
-        isRed = colors.red > colors.blue  && colors.red > colors.green ;
+        isRed = colors.red > colors.blue && colors.red > colors.green;
         isBlue = colors.blue > colors.red;
     }
 
-    public void sawRed(){
+    public void sawRed() {
         log("saw red");
         gyroTurn(TURN_SPEED, 23);
         sleep(100);
         robot.colorHolder.setPosition(robot.MAX_GRAB);
     }
+
     public void sawBlue() {
         log("saw blue");
         gyroTurn(TURN_SPEED, -23);
         sleep(100);
         robot.colorHolder.setPosition(robot.MAX_GRAB);
-       sleep(100);
+        sleep(100);
         log("saw blue2");
-        straitDrive(0,0);
+        straitDrive(0, 0);
         sleep(100);
         gyroTurn(TURN_SPEED, 23);
         log("saw blue3");
     }
-    public void blueColorArm(){
+
+    public void blueColorArm() {
         readColor();
         log("bluecolorsrm robot is blue" + isBlue);
-        if (isBlue){
+        if (isBlue) {
             sawBlue();
         } else {
             sawRed();
         }
     }
+
     public void redColorArm() {
-        if (isRed) {
+        readColor();
+        if (isBlue) {
+            sawRed();
+        } else {
             sawBlue();
-            sleep(250);
-            robot.colorHolder.setPosition(robot.MAX_GRAB);
-            sleep(250);
-            sawRed();
-        } else if (isBlue) {
-            sawRed();
-        }
     }
+
+}
     public void shiftDrive(double speed,
                            double distance) {
         robot.leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
