@@ -36,7 +36,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -138,6 +137,30 @@ public class turtleBot_finalController extends LinearOpMode {
             double leftgrab = gamepad2.left_stick_x;
             double rightgrab = gamepad2.right_stick_x;
             boolean spinleft = gamepad2.x;
+            boolean moveForward = gamepad1.dpad_up;
+            boolean moveBackward = gamepad1.dpad_down;
+            boolean moveRight = gamepad1.dpad_right;
+            boolean moveLeft = gamepad1.dpad_left;
+            if (moveForward){
+                move(1.0);
+            } else {
+                move(0.0);
+            }
+            if (moveBackward){
+                move(-1.0);
+            } else {
+                move(0.0);
+            }
+            if (moveRight){
+                turn(1.0);
+            } else {
+                move(0.0);
+            }
+            if (moveLeft){
+                turn(-1.0);
+            } else {
+                move(0.0);
+            }
 
             if (driveRight > 0.5){
                 //leftDrive.setPower(0.5);
@@ -374,6 +397,18 @@ public class turtleBot_finalController extends LinearOpMode {
         }
     }
 
+    private void move(double power) {
+        rightDrive.setPower(power);
+        leftDrive.setPower(power);
+        rightbackDrive.setPower(power);
+        leftbackDrive.setPower(power);
+    }
+    private void turn(double power) {
+        rightDrive.setPower(power);
+        leftDrive.setPower(power);
+        rightbackDrive.setPower(-power);
+        leftbackDrive.setPower(-power);
+    }
     private void openRightGrabSide() {
         double currentGrabRightPosition = grabright.getPosition();
         double newGrabRightPosition = currentGrabRightPosition-0.01;

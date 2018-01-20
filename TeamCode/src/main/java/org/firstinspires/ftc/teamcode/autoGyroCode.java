@@ -73,7 +73,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @Autonomous(name="Auto Gyro test", group="Pushbot")
-@Disabled
+//@Disabled
 public class autoGyroCode extends LinearOpMode {
 
     /* Declare OpMode members. */

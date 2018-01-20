@@ -612,7 +612,7 @@ public abstract class AutoBase extends LinearOpMode {
         do {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
-        while ((opModeIsActive() && (runtime.seconds() < 5)) && vuMark == RelicRecoveryVuMark.UNKNOWN);
+        while ((opModeIsActive() && (runtime.seconds() < 3)) && vuMark == RelicRecoveryVuMark.UNKNOWN);
 
         /**
          * See if any of the instances of {@link relicTemplate} are currently visible.

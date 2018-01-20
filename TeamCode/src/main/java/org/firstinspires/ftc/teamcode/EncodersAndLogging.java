@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "1 foot auto  shift", group = "Robosapiens")
+@Autonomous(name = "test with shift", group = "Robosapiens")
 public class EncodersAndLogging extends LinearOpMode {
 
     private static final String TAG = "ENCODERS";
@@ -54,15 +54,27 @@ public class EncodersAndLogging extends LinearOpMode {
         try {
             initialize();
             waitForStart();
-        //    moveForwardBy(24.0);
+          //  robot.colorHolder.setPosition(robot.MID_SERVO);
 
-         //   sleep(5000);
+            //sleep(1500);
 
-            moveLateralBy(24.0);
+            moveForwardBy(12.0);
 
-          //  sleep(5000);
+            sleep(5000);
 
-          //  moveForwardBy(24.0);
+            /*robot.colorHolder.setPosition(robot.Min_servo);
+
+            sleep(5000);
+
+            moveForwardBy(6.0);
+
+            sleep(5000);*/
+
+            moveLateralBy(12.0);
+
+            /*sleep(5000);
+
+            moveForwardBy(12.0);*/
             log("Program Complete");
         } finally {
             robot.resetMotors();
@@ -144,9 +156,9 @@ public class EncodersAndLogging extends LinearOpMode {
 
     private void setToMoveAt(double speed) {
         robot.leftDrive.setPower(Math.abs(speed));
-        robot.rightDrive.setPower(Math.abs(speed)+.01);
+        robot.rightDrive.setPower(Math.abs(speed));
         robot.leftbackDrive.setPower(Math.abs(speed));
-        robot.rightbackDrive.setPower(Math.abs(speed)+.01);
+        robot.rightbackDrive.setPower(Math.abs(speed));
     }
 
     private void moveForUpTo(double timeoutS) {

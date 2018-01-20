@@ -29,27 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcore.external.Func;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-
-import java.util.Locale;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
@@ -84,9 +65,9 @@ import java.util.Locale;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="red bottom", group="Pushbot")
+@Autonomous(name="red bottom + picture reader", group="Pushbot")
 //@Disabled
-public class red_bottom extends AutoBase {
+public class redBottomColorReader extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
@@ -94,9 +75,9 @@ public class red_bottom extends AutoBase {
         robot.spinner.setPower(0);
         robot.colorHolder.setPosition(robot.MAX_GRAB);
         grab();
-        sleep(1000);
+        sleep(500);
         lift(0.5);
-        sleep(1000);
+        sleep(500);
         stopElevator();
         robot.colorHolder.setPosition(robot.MIN_SERVO);
         sleep(1000);
@@ -107,24 +88,28 @@ public class red_bottom extends AutoBase {
 
        //gyroTurn(TURN_SPEED, 180);
   //      straitDrive(DRIVE_SPEED, -3.0);
-  /*      sleep(1000);
+        sleep(1000);
 
         double shiftDistance = 0;
-
+        double boxAngle = 0;
         switch (readRelic()) {
             case UNKNOWN:
-                shiftDistance = 24.0;
+                shiftDistance = 23.0;
+                boxAngle = 154.5;
                 break;
             case LEFT:
                 shiftDistance = 18.0;
+                boxAngle =152.5;
                 break;
             case CENTER:
-                shiftDistance = 24.0;
+                shiftDistance = 23.0;
+                boxAngle =154.5;
                 break;
             case RIGHT:
-                shiftDistance = 30.0;
+                shiftDistance = 28.0;
+                boxAngle = 154.5;
                 break;
-    }*/
+    }
       /*  spin(TURN_SPEED, -180);
         sleep(1000);
         robot.colorHolder.setPosition(robot.MID_SERVO);
@@ -141,13 +126,13 @@ public class red_bottom extends AutoBase {
             gyroTurn( TURN_SPEED,  45.0);
         }
         sleep(250);*/
-        sleep(1000);
+        sleep(500);
         //    robot.colorHolder.setPosition(robot.MID_SERVO);
         // sleep(1000);
-        straitDrive(DRIVE_SPEED, 24);
+        straitDrive(DRIVE_SPEED, shiftDistance);
         // Drive FWD 48 inches
 
-     sleep(1000);
+     sleep(500);
 
         //spin(-0.5, 0.25);
         //sleep(1000);
@@ -158,17 +143,17 @@ public class red_bottom extends AutoBase {
         // Turn  CW  to  45 Degrees
 
         // Hold  45 Deg heading for a 1/2 secon
-        gyroTurn(TURN_SPEED, 154.5);
+        gyroTurn(TURN_SPEED, boxAngle);
         // Drive REV 48 inches
-        sleep(1000);
+        sleep(500);
         relese(2.0);
-        sleep(1000);
-        straitDrive(DRIVE_SPEED, -15.0);
+        sleep(500);
+        straitDrive(DRIVE_SPEED, -12.0);
 
-        sleep(1000);
+        sleep(500);
         //sleep(1000);
         drop();
-        sleep(1000);
+        sleep(500);
 
         straitDrive(DRIVE_SPEED, 5.0);
 

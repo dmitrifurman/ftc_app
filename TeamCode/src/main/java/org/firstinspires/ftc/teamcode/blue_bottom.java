@@ -50,27 +50,27 @@ public class blue_bottom extends AutoBase {
         sleep(1000);
         blueColorArm();
         sleep(1000);
-      // double boxAngle = 95;
-        /*
+     /*  double boxAngle = 0.0;
+
         switch (readRelic()) {
             case UNKNOWN:
                 log("unknown");
-                boxAngle = 95.0;
+                boxAngle = -24.0;
                 break;
             case LEFT:
                 log("left");
-                boxAngle = 135.0;
+                boxAngle = -18.0;
                 break;
             case CENTER:
                 log("middle");
-                boxAngle = 112.0;
+                boxAngle = -24.0;
                 break;
             case RIGHT:
                 log("right");
-                boxAngle = 95.0;
+                boxAngle = -30.0;
                 break;
         }
-        */
+
       /*  spin(TURN_SPEED, -180);
         sleep(1000);
         robot.colorHolder.setPosition(robot.MID_SERVO);
@@ -90,7 +90,7 @@ public class blue_bottom extends AutoBase {
         sleep(500);
         //    robot.colorHolder.setPosition(robot.MID_SERVO);
         // sleep(1000);
-        straitDrive(DRIVE_SPEED, -35.0);
+        straitDrive(DRIVE_SPEED, -24);
         // Drive FWD 48 inches
 
         sleep(500);
@@ -104,7 +104,7 @@ public class blue_bottom extends AutoBase {
         // Turn  CW  to  45 Degrees
 
         // Hold  45 Deg heading for a 1/2 secon
-        gyroTurn(TURN_SPEED, 90);
+        gyroTurn(TURN_SPEED, 90.25);
         // Drive REV 48 inches
         sleep(500);
         relese(2.0);
@@ -116,7 +116,7 @@ public class blue_bottom extends AutoBase {
         drop();
         sleep(500);
 
-        straitDrive(DRIVE_SPEED, 7.0);
+        straitDrive(DRIVE_SPEED, 5.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

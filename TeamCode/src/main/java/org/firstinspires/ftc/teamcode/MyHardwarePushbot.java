@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -62,8 +64,9 @@ public class MyHardwarePushbot {
     public DcMotor spinner = null;
     public Servo grableft;
     public Servo grabright;
-    public static final double MAX_GRAB = 0.775;     // Maximum rotational position
-    public static final double MIN_GRAB = 0.0;
+    public Servo colorHolder;
+    public static final double MAX_GRAB = 0.0;     // Maximum rotational position
+    public static final double MIN_GRAB = 1.0;
 
 
     /** The colorSensor field will contain a reference to our color sensor hardware object */
@@ -72,11 +75,12 @@ public class MyHardwarePushbot {
     //public DcMotor  leftArm     = null;
     //public Servo    leftClaw    = null;
     //public Servo    rightClaw   = null;
-    public static final double MIN_SERVO = 0;
-    public static final double MID_SERVO = 0.5;
+    public static final double MIN_SERVO = 1.0;
+    public static final double MID_SERVO = 0.75;
     public static final double ARM_UP_POWER = 0.45;
     public static final double ARM_DOWN_POWER = -0.45;
     public static final double Servo_Zero = 1.0;
+
     /* local OpMode members. */
     HardwareMap hwMap = null;
 
@@ -95,6 +99,7 @@ public class MyHardwarePushbot {
         elevator = hwMap.get(DcMotor.class, "elevator");
         grableft = hwMap.get(Servo.class, "grableft");
         grabright = hwMap.get(Servo.class, "grabright");
+        colorHolder = hwMap.get(Servo.class, "colorHolder");
         grableft.resetDeviceConfigurationForOpMode();
         grabright.resetDeviceConfigurationForOpMode();
         //leftArm    = hwMap.get(DcMotor.class, "left_arm");
@@ -107,11 +112,11 @@ public class MyHardwarePushbot {
 
         grabright.setDirection(Servo.Direction.REVERSE);
         grableft.setDirection(Servo.Direction.FORWARD);
-
+        colorHolder.setDirection(Servo.Direction.REVERSE);
 
 
         // Get a reference to our sensor object.
-        colorSensor = hwMap.get(NormalizedColorSensor.class, "sensor_color");
+       colorSensor = hwMap.get(NormalizedColorSensor.class, "sensor_color");
 
         // If possible, turn the light on in the beginning (it might already be on anyway,
         // we just make sure it is if we can).
@@ -120,22 +125,22 @@ public class MyHardwarePushbot {
         }
 
         // Set all motors to zero power
-        resetMotors();
+      //  resetMotors();
 
-//        colorHolder = hwMap.get(Servo.class, "colorHolder");
+       colorHolder = hwMap.get(Servo.class, "colorHolder");
         // Define and initialize ALL installed servos.
         //leftClaw  = hwMap.get(Servo.class, "left_hand");
         //rightClaw = hwMap.get(Servo.class, "right_hand");
         //leftClaw.setPosition(MID_SERVO);
-        //rightClaw.setPosition(MID_SERVO);
 
-    }
 
+}
     public void resetMotors() {
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        spinner.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void stopMotion() {
@@ -150,6 +155,8 @@ public class MyHardwarePushbot {
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
 }
 

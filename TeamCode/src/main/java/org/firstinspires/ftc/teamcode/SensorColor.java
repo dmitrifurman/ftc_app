@@ -160,8 +160,8 @@ public class SensorColor extends LinearOpMode {
               .addData("g", "%.3f", colors.green)
               .addData("b", "%.3f", colors.blue);
 
-        boolean isRed = colors.red > 0.017 && colors.blue < 0.009 && colors.green < 0.009;
-        boolean isBlue = colors.blue > 0.017 && colors.red < 0.009 && colors.green < 0.012;
+        boolean isRed = colors.red > 0.014 && colors.blue < 0.009 && colors.green < 0.009;
+        boolean isBlue = colors.blue > 0.014 && colors.red < 0.009 && colors.green < 0.012;
 
         telemetry.addData("isred", isRed);
       telemetry.addData("isblue", isBlue);
