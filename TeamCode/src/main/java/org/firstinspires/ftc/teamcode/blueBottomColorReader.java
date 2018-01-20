@@ -48,7 +48,7 @@ public class blueBottomColorReader extends AutoBase {
         stopElevator();
         robot.colorHolder.setPosition(robot.MIN_SERVO);
         sleep(1000);
-        blueColorArm();
+        //blueColorArm();
         sleep(1000);
       double boxAngle = 0.0;
 

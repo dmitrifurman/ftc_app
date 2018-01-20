@@ -89,21 +89,6 @@ public class red_top extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
-
-        /*
-         * Initialize the standard drive system variables.
-         * The init() method of the hardware class does most of the work here
-         */
-
-
-
-        robot.colorHolder.setPosition(robot.MIN_GRAB);
-        grab();
-        sleep(1000);
-        lift(0.5);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
-        sleep(1000);
         redColorArm();
         sleep(1000);
 

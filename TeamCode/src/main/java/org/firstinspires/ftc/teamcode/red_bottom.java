@@ -90,16 +90,6 @@ public class red_bottom extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
-        robot.spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.spinner.setPower(0);
-        robot.colorHolder.setPosition(robot.MAX_GRAB);
-        grab();
-        sleep(1000);
-        lift(0.5);
-        sleep(1000);
-        stopElevator();
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
-        sleep(1000);
 
   redColorArm();
 

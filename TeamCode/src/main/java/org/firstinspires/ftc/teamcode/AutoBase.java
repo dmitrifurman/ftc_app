@@ -73,8 +73,10 @@ public abstract class AutoBase extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
+        robot.spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         initRelic();
         initGyro();
+
 
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
@@ -90,24 +92,22 @@ public abstract class AutoBase extends LinearOpMode {
             idle();
         }*/
 
-        telemetry.addData(">", "Robot Ready.");    //
-        telemetry.update();
+       // telemetry.addData(">", "Robot Ready.");    //
+       // telemetry.update();
 
         robot.setRunUsingEncoder();
 
+        waitForStart();
 
-        // Wait for the game to start (Display Gyro value), and reset gyro before we move..
-       /* while (!isStarted()) {
-            telemetry.addData(">", "Robot Heading = %d", gyro.getIntegratedZValue());
-            telemetry.update();
-        }
-
-        gyro.resetZAxisIntegrator();*/
-
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        // Put a hold after each turn
-
+        robot.spinner.setPower(0);
+        robot.colorHolder.setPosition(robot.MAX_GRAB);
+        grab();
+        sleep(500);
+        lift(0.5);
+        sleep(500);
+        stopElevator();
+        robot.colorHolder.setPosition(robot.MIN_SERVO);
+        sleep(1000);
         executeSpecificOpMode();
     }
 
@@ -141,17 +141,17 @@ public abstract class AutoBase extends LinearOpMode {
     public void readColor() {
 
         NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
-        //rightClaw.setPosition(MID_SERVO);
+      // rightClaw.setPosition(MID_SERVO);
 
         isRed = colors.red > colors.blue && colors.red > colors.green;
         isBlue = colors.blue > colors.red;
     }
 
     public void sawRed() {
-        log("saw red");
-        gyroTurn(TURN_SPEED, 23);
+       log("saw red");
+       gyroTurn(TURN_SPEED, 23);
         sleep(100);
-        robot.colorHolder.setPosition(robot.MAX_GRAB);
+       robot.colorHolder.setPosition(robot.MAX_GRAB);
     }
 
     public void sawBlue() {
@@ -173,7 +173,7 @@ public abstract class AutoBase extends LinearOpMode {
         if (isBlue) {
             sawBlue();
         } else {
-            sawRed();
+           sawRed();
         }
     }
 
@@ -184,8 +184,8 @@ public abstract class AutoBase extends LinearOpMode {
         } else {
             sawBlue();
     }
-
-}
+    }
+//}
     public void shiftDrive(double speed,
                            double distance) {
         robot.leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
@@ -526,6 +526,7 @@ public abstract class AutoBase extends LinearOpMode {
                 })
                 .addData("mag", new Func<String>() {
                     @Override
+
                     public String value() {
                         return String.format(Locale.getDefault(), "%.3f",
                                 Math.sqrt(gravity.xAccel * gravity.xAccel

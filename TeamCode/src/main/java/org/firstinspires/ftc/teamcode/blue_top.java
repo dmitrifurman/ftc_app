@@ -39,22 +39,6 @@ public class blue_top extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
-
-        /*
-         * Initialize the standard drive system variables.
-         * The init() method of the hardware class does most of the work here
-         */
-
-        robot.spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.spinner.setPower(0);
-        robot.colorHolder.setPosition(robot.MAX_GRAB);
-        grab();
-        sleep(500);
-        lift(0.5);
-        sleep(500);
-        stopElevator();
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
-        sleep(1000);
         blueColorArm();
         sleep(1000);
  /*       double boxAngle = 0;

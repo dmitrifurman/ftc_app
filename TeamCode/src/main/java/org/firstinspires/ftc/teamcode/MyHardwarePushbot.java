@@ -116,7 +116,7 @@ public class MyHardwarePushbot {
 
 
         // Get a reference to our sensor object.
-       colorSensor = hwMap.get(NormalizedColorSensor.class, "sensor_color");
+        colorSensor = hwMap.get(NormalizedColorSensor.class, "sensor_color");
 
         // If possible, turn the light on in the beginning (it might already be on anyway,
         // we just make sure it is if we can).
