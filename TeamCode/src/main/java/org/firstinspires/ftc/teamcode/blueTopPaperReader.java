@@ -30,86 +30,58 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "blue bottom + picture reader", group = "Pushbot")
+
+@Autonomous(name="blue top + paper reader", group="Pushbot")
 //@Disabled
-public class blueBottomColorReader extends AutoBase {
+public class blueTopPaperReader extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
-
         blueColorArm();
-        sleep(1000);
-      double boxAngle = 0.0;
-
+        sleep(500);
+        double boxAngle = 0;
         switch (readRelic()) {
             case UNKNOWN:
                 log("unknown");
-                boxAngle = -24.0;
+                boxAngle = -9.5;
                 break;
             case LEFT:
                 log("left");
-                boxAngle = -18.0;
+                boxAngle = -7.5;
                 break;
             case CENTER:
                 log("middle");
-                boxAngle = -24.0;
+                boxAngle = -9.5;
                 break;
             case RIGHT:
                 log("right");
-                boxAngle = -30.0;
+                boxAngle = -11.5;
                 break;
         }
 
-      /*  spin(TURN_SPEED, -180);
+        //spin(-0.5, 1);
         sleep(1000);
-        robot.colorHolder.setPosition(robot.MID_SERVO);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
-        sleep(250);
-        if(robot.isRed){
-            gyroTurn( TURN_SPEED,  45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  -45.0);
-        } else if (robot.isBlue){
-            gyroTurn( TURN_SPEED,  -45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  45.0);
-        }
-        sleep(250);*/
+        straitDrive(DRIVE_SPEED, -24);
         sleep(500);
-        //    robot.colorHolder.setPosition(robot.MID_SERVO);
-        // sleep(1000);
-        straitDrive(DRIVE_SPEED, boxAngle);
-        // Drive FWD 48 inches
-
-        sleep(500);
-
-        //spin(-0.5, 0.25);
-        //sleep(1000);
-        //gyroDrive(DRIVE_SPEED, 12.0, 0.0);    // Drive FWD 48 inches
-        //angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        //gyroDrive(DRIVE_SPEED, -12, 0.0);
-        // Turn  CW  to  45 Degrees
-
-        // Hold  45 Deg heading for a 1/2 secon
-        gyroTurn(TURN_SPEED, 90.25);
-        // Drive REV 48 inches
+        gyroTurn(TURN_SPEED, boxAngle);
         sleep(500);
         relese(2.0);
         sleep(500);
-        straitDrive(DRIVE_SPEED, -15.0);
-
-        sleep(500);
         //sleep(1000);
-        drop();
-        sleep(500);
 
-        straitDrive(DRIVE_SPEED, 5.0);
+        sleep(500);
+        straitDrive(DRIVE_SPEED, -20.0);
+
+        sleep(500);
+        drop();
+
+sleep(500);
+       straitDrive(DRIVE_SPEED, 5.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
+
+
 }

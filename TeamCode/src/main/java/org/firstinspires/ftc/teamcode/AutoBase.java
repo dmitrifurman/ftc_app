@@ -98,7 +98,7 @@ public abstract class AutoBase extends LinearOpMode {
         robot.setRunUsingEncoder();
 
         waitForStart();
-
+        robot.spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.spinner.setPower(0);
         robot.colorHolder.setPosition(robot.MAX_GRAB);
         grab();
@@ -143,8 +143,11 @@ public abstract class AutoBase extends LinearOpMode {
         NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
       // rightClaw.setPosition(MID_SERVO);
 
-        isRed = colors.red > colors.blue && colors.red > colors.green;
+        isRed = colors.red > colors.blue*1.35 & colors.red > colors.green*1.35;
         isBlue = colors.blue > colors.red;
+
+        telemetry.addData("read color is blue", isBlue);
+        telemetry.update();
     }
 
     public void sawRed() {
@@ -166,14 +169,20 @@ public abstract class AutoBase extends LinearOpMode {
         gyroTurn(TURN_SPEED, 23);
         log("saw blue3");
     }
-
+    public void noColor(){
+        robot.colorHolder.setPosition(robot.MAX_GRAB);
+        sleep(250);
+        gyroTurn(TURN_SPEED, 23);
+    }
     public void blueColorArm() {
         readColor();
         log("bluecolorsrm robot is blue" + isBlue);
         if (isBlue) {
             sawBlue();
-        } else {
+        } else if (isRed){
            sawRed();
+        } else {
+            noColor();
         }
     }
 
@@ -181,11 +190,12 @@ public abstract class AutoBase extends LinearOpMode {
         readColor();
         if (isBlue) {
             sawRed();
-        } else {
+        } else if (isRed){
             sawBlue();
+    } else {
+            noColor();
     }
-    }
-//}
+}
     public void shiftDrive(double speed,
                            double distance) {
         robot.leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
