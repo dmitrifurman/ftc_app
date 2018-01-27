@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name = "blue bottom + picture reader", group = "Pushbot")
 //@Disabled
-public class blueBottomColorReader extends AutoBase {
+public class blueBottomPaperReader extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
@@ -46,19 +46,19 @@ public class blueBottomColorReader extends AutoBase {
         switch (readRelic()) {
             case UNKNOWN:
                 log("unknown");
-                boxAngle = -24.0;
+                boxAngle = -29.0;
                 break;
             case LEFT:
                 log("left");
-                boxAngle = -18.0;
+                boxAngle = -24.0;
                 break;
             case CENTER:
                 log("middle");
-                boxAngle = -24.0;
+                boxAngle = -29.0;
                 break;
             case RIGHT:
                 log("right");
-                boxAngle = -30.0;
+                boxAngle = -36.0;
                 break;
         }
 

@@ -54,14 +54,14 @@ public abstract class AutoBase extends LinearOpMode {
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     //static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
     //                                                  (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final int COUNTS_PER_INCH = 116;
-    static final double COUNTS_PER_SHIFT = 141.15;
+    static final int COUNTS_PER_INCH = 58;
+    static final double COUNTS_PER_SHIFT = 72.5;
     static final int SPIN_TOILET_PART = 560;
     protected static final String TAG = "gyro";
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    static final double DRIVE_SPEED = 0.7;     // Nominal speed for better accuracy.
-    static final double TURN_SPEED = 0.35;     // Nominal half speed for better accuracy.
+    static final double DRIVE_SPEED = 0.35;     // Nominal speed for better accuracy.
+    static final double TURN_SPEED = 0.175;     // Nominal half speed for better accuracy.
     boolean isRed;
     boolean isBlue;
     static final double HEADING_THRESHOLD = 1;      // As tight as we can make it with an integer gyro
@@ -152,37 +152,37 @@ public abstract class AutoBase extends LinearOpMode {
 
     public void sawRed() {
        log("saw red");
-       gyroTurn(TURN_SPEED, 23);
+       gyroTurn(TURN_SPEED, 21);
         sleep(100);
        robot.colorHolder.setPosition(robot.MAX_GRAB);
     }
 
     public void sawBlue() {
         log("saw blue");
-        gyroTurn(TURN_SPEED, -23);
+        gyroTurn(TURN_SPEED, -21);
         sleep(100);
         robot.colorHolder.setPosition(robot.MAX_GRAB);
         sleep(100);
         log("saw blue2");
         straitDrive(0, 0);
         sleep(100);
-        gyroTurn(TURN_SPEED, 23);
+        gyroTurn(TURN_SPEED, 21);
         log("saw blue3");
     }
     public void noColor(){
         robot.colorHolder.setPosition(robot.MAX_GRAB);
         sleep(250);
-        gyroTurn(TURN_SPEED, 23);
+        gyroTurn(TURN_SPEED, 22);
     }
     public void blueColorArm() {
         readColor();
         log("bluecolorsrm robot is blue" + isBlue);
         if (isBlue) {
             sawBlue();
-        } else if (isRed){
-           sawRed();
         } else {
-            noColor();
+           sawRed();
+
+
         }
     }
 
@@ -190,10 +190,8 @@ public abstract class AutoBase extends LinearOpMode {
         readColor();
         if (isBlue) {
             sawRed();
-        } else if (isRed){
+        } else {
             sawBlue();
-    } else {
-            noColor();
     }
 }
     public void shiftDrive(double speed,
