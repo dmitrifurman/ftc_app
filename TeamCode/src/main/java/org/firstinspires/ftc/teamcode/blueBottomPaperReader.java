@@ -46,7 +46,7 @@ public class blueBottomPaperReader extends AutoBase {
         switch (readRelic()) {
             case UNKNOWN:
                 log("unknown");
-                boxAngle = -29.0;
+                boxAngle = -28.0;
                 break;
             case LEFT:
                 log("left");
@@ -54,7 +54,7 @@ public class blueBottomPaperReader extends AutoBase {
                 break;
             case CENTER:
                 log("middle");
-                boxAngle = -29.0;
+                boxAngle = -28.0;
                 break;
             case RIGHT:
                 log("right");

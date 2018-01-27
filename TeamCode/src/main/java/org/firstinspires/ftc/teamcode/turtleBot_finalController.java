@@ -170,9 +170,9 @@ public class turtleBot_finalController extends LinearOpMode {
             }
 
             if (lift && !drop) {
-                elevator.setPower(0.75);
+                elevator.setPower(0.8);
             } else if (!lift && drop) {
-                elevator.setPower(-0.1);
+                elevator.setPower(-0.15);
                 //} else if ((!lift && !drop) || (lift && drop)){
             } else {
                 elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -223,23 +223,27 @@ public class turtleBot_finalController extends LinearOpMode {
             }
 
             if (spinright && !spinleft){
-                spinner.setPower(0.4);
+                spinner.setPower(0.6);
             } else if (spinleft && !spinright) {
-                spinner.setPower(-0.4);
+                spinner.setPower(-0.6);
                 //} else if ((!spinleft && !spinright) || (spinleft && spinright)){
             } else {
                 spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 spinner.setPower(0);
             }
 
-            if (shiftRight > 0 || shiftRight < 0){
-                shiftRight(SPEED * shiftRight);
+            if (shiftRight > 0){
+                shiftRight(1.0);
+            } else if (shiftRight < 0) {
+                shiftRight(-1.0);
             } else {
                 shiftRight(0);
             }
-            if (shiftLeft > 0 || shiftLeft < 0){
-                shiftLeft(SPEED * shiftLeft);
+            if (shiftLeft > 0){
+                shiftLeft(1.0);
                 //rightbackDrive.setPower(0.5);
+            } else if (shiftLeft < 0) {
+                shiftLeft(-1.0);
             } else {
                 shiftLeft(0);
             }

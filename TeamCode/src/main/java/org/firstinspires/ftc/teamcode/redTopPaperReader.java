@@ -77,16 +77,16 @@ public class redTopPaperReader extends AutoBase {
         double shiftDistance = 0.0;
         switch (readRelic()) {
             case UNKNOWN:
-                shiftDistance = -117.5;
+                shiftDistance = -113.0;
                 break;
             case LEFT:
-                shiftDistance = -119.5;
-                break;
-            case CENTER:
                 shiftDistance = -117.5;
                 break;
+            case CENTER:
+                shiftDistance = -113.0;
+                break;
             case RIGHT:
-                shiftDistance = -115.5;
+                shiftDistance = -109.5;
                 break;
         }
 
@@ -108,19 +108,19 @@ public class redTopPaperReader extends AutoBase {
         }
         sleep(250);*/
         straitDrive(DRIVE_SPEED, 24.0);
-        sleep(1000);
+        sleep(500);
    //     shiftDrive(DRIVE_SPEED, shiftDistance);
      //   sleep(1000);
         gyroTurn(TURN_SPEED, shiftDistance);
-        sleep(1000);
+        sleep(500);
         relese(2.0);
-        sleep(1000);
+        sleep(500);
         straitDrive(DRIVE_SPEED, -20.0);
 
-        sleep(1000);
+        sleep(500);
         //sleep(1000);
         drop();
-        sleep(1000);
+        sleep(500);
 
 
 
