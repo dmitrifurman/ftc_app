@@ -34,6 +34,7 @@ import android.util.Log;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -52,7 +53,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="turtle-bot controller", group="Linear Opmode")
+@TeleOp(name="turtle-bot v2.0 with relic grabber controller mode", group="Linear Opmode")
 //@Disabled
 public class turtleBot_finalController extends LinearOpMode {
 
@@ -64,9 +65,14 @@ public class turtleBot_finalController extends LinearOpMode {
     private DcMotor rightbackDrive = null;
     private DcMotor elevator = null;
     private DcMotor spinner = null;
+    private DcMotor extender = null;
     private Servo grableft;
     private Servo grabright;
+    private Servo colorHolder;
+    private Servo relicGrab;
     private static double SPEED = 1.0;
+    boolean extended = true;
+    boolean caught = true;
     // Maximum rotational position
 
     @Override
@@ -86,6 +92,8 @@ public class turtleBot_finalController extends LinearOpMode {
         elevator = hardwareMap.get(DcMotor.class, "elevator");
         grableft = hardwareMap.get(Servo.class, "grableft");
         grabright = hardwareMap.get(Servo.class, "grabright");
+        colorHolder = hardwareMap.get(Servo.class, "colorHolder");
+        relicGrab = hardwareMap.get(Servo.class, "relicGrab");
         grableft.resetDeviceConfigurationForOpMode();
         grabright.resetDeviceConfigurationForOpMode();
 
@@ -100,10 +108,12 @@ public class turtleBot_finalController extends LinearOpMode {
         rightbackDrive.setDirection(DcMotor.Direction.REVERSE);
         elevator.setDirection(DcMotor.Direction.FORWARD);
         spinner.setDirection(DcMotor.Direction.FORWARD);
+        extender.setDirection(DcMotor.Direction.REVERSE);
 
         grabright.setDirection(Servo.Direction.REVERSE);
         grableft.setDirection(Servo.Direction.FORWARD);
-
+        colorHolder.setDirection(Servo.Direction.REVERSE);
+        relicGrab.setDirection(Servo.Direction.FORWARD);
         Log.d("Turtle", "Init Left: "+ grableft.getPosition());
         Log.d("Turtle", "Init Right: "+ grabright.getPosition());
         Log.d("Turtle", "Init Left Controller: "+ grableft.getController().getServoPosition(0));
@@ -136,6 +146,28 @@ public class turtleBot_finalController extends LinearOpMode {
             boolean moveBackward = gamepad1.dpad_down;
             boolean moveRight = gamepad1.dpad_right;
             boolean moveLeft = gamepad1.dpad_left;
+            boolean extend = gamepad1.left_bumper;
+            boolean relicHold = gamepad1.right_bumper;
+
+            colorHolder.setPosition(0.4);
+
+            if(extend && extended){
+                extender.setPower(0.75);
+                extended = false;
+            }else if(!extended && extend){
+                extender.setPower(-0.75);
+                extended = true;
+            }else{
+                extender.setPower(0.0);
+            }
+            if(relicHold && caught){
+                relicGrab.setPosition(1.0);
+                caught = false;
+            }else if(relicHold && !caught){
+                relicGrab.setPosition(0.5);
+                caught = true;
+            }
+
             if (moveForward){
                 move(SPEED);
             } else {
@@ -294,6 +326,7 @@ public class turtleBot_finalController extends LinearOpMode {
 //        rightbackDrive.setPower(-power);
 //        leftbackDrive.setPower(-power);
     }
+
     private void openRightGrabSide() {
         double currentGrabRightPosition = grabright.getPosition();
         double newGrabRightPosition = currentGrabRightPosition-0.01;
