@@ -91,76 +91,35 @@ public class red_bottom extends AutoBase {
     @Override
     public void executeSpecificOpMode() {
         robot.colorHolder.setPosition(robot.MIN_SERVO);
+
         sleep(1000);
-  redColorArm();
-
-
-
-       //gyroTurn(TURN_SPEED, 180);
-  //      straitDrive(DRIVE_SPEED, -3.0);
-  /*      sleep(1000);
-
-        double shiftDistance = 0;
-
-        switch (readRelic()) {
-            case UNKNOWN:
-                shiftDistance = 24.0;
-                break;
-            case LEFT:
-                shiftDistance = 18.0;
-                break;
-            case CENTER:
-                shiftDistance = 24.0;
-                break;
-            case RIGHT:
-                shiftDistance = 30.0;
-                break;
-    }*/
-      /*  spin(TURN_SPEED, -180);
+        redColorArm();
         sleep(1000);
-        robot.colorHolder.setPosition(robot.MID_SERVO);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
-        sleep(250);
-        if(robot.isRed){
-            gyroTurn( TURN_SPEED,  45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  -45.0);
-        } else if (robot.isBlue){
-            gyroTurn( TURN_SPEED,  -45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  45.0);
-        }
-        sleep(250);*/
-        sleep(1000);
-        //    robot.colorHolder.setPosition(robot.MID_SERVO);
+
+        //robot.colorHolder.setPosition(robot.MID_SERVO);
         // sleep(1000);
+
         straitDrive(DRIVE_SPEED, 24);
         // Drive FWD 48 inches
 
-     sleep(1000);
-
-        //spin(-0.5, 0.25);
-        //sleep(1000);
-        //gyroDrive(DRIVE_SPEED, 12.0, 0.0);    // Drive FWD 48 inches
-        //angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        //gyroDrive(DRIVE_SPEED, -12, 0.0);
-        // Turn  CW  to  45 Degrees
-
-        // Hold  45 Deg heading for a 1/2 secon
+        sleep(500);
         gyroTurn(TURN_SPEED, 154.5);
-        // Drive REV 48 inches
-        sleep(1000);
+
+        // lower arm
+        sleep(500);
         relese(2.0);
-        sleep(1000);
+        sleep(500);
+
+        //push box
         straitDrive(DRIVE_SPEED, -20.0);
 
-        sleep(1000);
-        //sleep(1000);
+        sleep(500);
+
+        //let go of box
         drop();
-        sleep(1000);
-        //changed backup distance from 5 to 2
+        sleep(500);
+
+        //backup
         straitDrive(DRIVE_SPEED, 8.0);
 
         telemetry.addData("Path", "Complete");

@@ -36,7 +36,6 @@ public abstract class AutoBase extends LinearOpMode {
     //start at ~25'
     /* Declare OpMode members. */
     MyHardwarePushbot robot = new MyHardwarePushbot();   // Use a Pushbot's hardware
-    //ModernRoboticsI2cGyro   gyro    = null;                    // Additional Gyro device
     // The IMU sensor object
     BNO055IMU imu;
     Orientation angles;
@@ -77,29 +76,15 @@ public abstract class AutoBase extends LinearOpMode {
         initRelic();
         initGyro();
 
-
-
-        // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
+        // reset motors and turn on encoders.
         robot.resetMotors();
-
-        // Send telemetry message to alert driver that we are calibrating
-
-        /*gyro.calibrate();
-
-        // make sure the gyro is calibrated before continuing
-        while (!isStopRequested() && gyro.isCalibrating())  {
-            sleep(50);
-            idle();
-        }*/
-
-       // telemetry.addData(">", "Robot Ready.");    //
-       // telemetry.update();
-
         robot.setRunUsingEncoder();
 
         waitForStart();
+
         robot.spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.spinner.setPower(0);
+
         robot.colorHolder.setPosition(robot.MIN_GRAB);
         sleep(250);
         grab();
@@ -175,8 +160,9 @@ public abstract class AutoBase extends LinearOpMode {
         gyroTurn(TURN_SPEED, 21);
     }
     public void blueColorArm() {
+
         readColor();
-//        log("blueColorArm robot is blue" + isBlue);
+
         if (isBlue) {
             sawBlue();
         } else {
@@ -416,6 +402,11 @@ public abstract class AutoBase extends LinearOpMode {
         // determine turn power based on +/- error
         error = getError(angle);
 
+        //why can't this a double
+        if(error <= .5 ) {
+            //this should give us more accurate angle
+            
+        }
         if (Math.abs(error) <= HEADING_THRESHOLD) {
             steer = 0.0;
             leftSpeed = 0.0;

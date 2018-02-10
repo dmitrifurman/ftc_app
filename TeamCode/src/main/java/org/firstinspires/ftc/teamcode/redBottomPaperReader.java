@@ -72,13 +72,11 @@ public class redBottomPaperReader extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
-  redColorArm();
 
-
-
-       //gyroTurn(TURN_SPEED, 180);
-  //      straitDrive(DRIVE_SPEED, -3.0);
-        sleep(1000);
+        robot.colorHolder.setPosition(robot.MIN_SERVO);
+        sleep(800);
+        redColorArm();
+        sleep(300);
 
         double shiftDistance = 0;
 
@@ -95,51 +93,28 @@ public class redBottomPaperReader extends AutoBase {
             case RIGHT:
                 shiftDistance = 22.0;
                 break;
-    }
-      /*  spin(TURN_SPEED, -180);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MID_SERVO);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
-        sleep(250);
-        if(robot.isRed){
-            gyroTurn( TURN_SPEED,  45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  -45.0);
-        } else if (robot.isBlue){
-            gyroTurn( TURN_SPEED,  -45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  45.0);
         }
-        sleep(250);*/
-        sleep(500);
-        //    robot.colorHolder.setPosition(robot.MID_SERVO);
-        // sleep(1000);
+
+        sleep(300);
+
+        // Drive FWD distance based on picture in inches
         straitDrive(DRIVE_SPEED, shiftDistance);
-        // Drive FWD 48 inches
+        sleep(300);
 
-     sleep(500);
 
-        //spin(-0.5, 0.25);
-        //sleep(1000);
-        //gyroDrive(DRIVE_SPEED, 12.0, 0.0);    // Drive FWD 48 inches
-        //angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        //gyroDrive(DRIVE_SPEED, -12, 0.0);
-        // Turn  CW  to  45 Degrees
-
-        // Hold  45 Deg heading for a 1/2 secon
+        // Turn  CW  to  154.5 Degrees
         gyroTurn(TURN_SPEED, 154.5);
+
         // Drive REV 48 inches
-        sleep(500);
+        sleep(300);
         relese(2.0);
-        sleep(500);
+
+        sleep(300);
         straitDrive(DRIVE_SPEED, -20.0);
 
-        sleep(500);
-        //sleep(1000);
+        sleep(300);
         drop();
-        sleep(500);
+        sleep(300);
 
         straitDrive(DRIVE_SPEED, 8.0);
 

@@ -42,72 +42,31 @@ public class blue_bottom extends AutoBase {
         sleep(1000);
         blueColorArm();
         sleep(1000);
-     /*  double boxAngle = 0.0;
 
-        switch (readRelic()) {
-            case UNKNOWN:
-                log("unknown");
-                boxAngle = -24.0;
-                break;
-            case LEFT:
-                log("left");
-                boxAngle = -18.0;
-                break;
-            case CENTER:
-                log("middle");
-                boxAngle = -24.0;
-                break;
-            case RIGHT:
-                log("right");
-                boxAngle = -30.0;
-                break;
-        }
 
-      /*  spin(TURN_SPEED, -180);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MID_SERVO);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
-        sleep(250);
-        if(robot.isRed){
-            gyroTurn( TURN_SPEED,  45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  -45.0);
-        } else if (robot.isBlue){
-            gyroTurn( TURN_SPEED,  -45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  45.0);
-        }
-        sleep(250);*/
-        sleep(500);
-        //    robot.colorHolder.setPosition(robot.MID_SERVO);
-        // sleep(1000);
-        straitDrive(DRIVE_SPEED, -24);
-        // Drive FWD 48 inches
-
-        sleep(500);
-
-        //spin(-0.5, 0.25);
+        //robot.colorHolder.setPosition(robot.MID_SERVO);
         //sleep(1000);
-        //gyroDrive(DRIVE_SPEED, 12.0, 0.0);    // Drive FWD 48 inches
-        //angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        //gyroDrive(DRIVE_SPEED, -12, 0.0);
-        // Turn  CW  to  45 Degrees
+        straitDrive(DRIVE_SPEED, -24);
 
-        // Hold  45 Deg heading for a 1/2 secon
+
+        sleep(500);
         gyroTurn(TURN_SPEED, 90.25);
-        // Drive REV 48 inches
+
+        // drop arm
         sleep(500);
         relese(2.0);
         sleep(500);
-        straitDrive(DRIVE_SPEED, -12.0);
 
+        //push box into slot
+        straitDrive(DRIVE_SPEED, -12.0);
         sleep(500);
-        //sleep(1000);
+
+        //open servos and let go of box
         drop();
         sleep(500);
 
+        //go backward to park
         straitDrive(DRIVE_SPEED, 8.0);
 
         telemetry.addData("Path", "Complete");

@@ -43,52 +43,15 @@ public class blue_top extends AutoBase {
         sleep(1000);
         blueColorArm();
         sleep(1000);
- /*       double boxAngle = 0;
-        switch (readRelic()) {
-            case UNKNOWN:
-                log("unknown");
-                boxAngle = 0.0;
-                break;
-            case LEFT:
-                log("left");
-                boxAngle = 46.0;
-                break;
-            case CENTER:
-                log("middle");
-                boxAngle = 23.0;
-                break;
-            case RIGHT:
-                log("right");
-                boxAngle = 0.0;
-                break;
-        }
 
-        //spin(-0.5, 1);
-        spin(TURN_SPEED, -180);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MID_SERVO);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
-        sleep(250);
-        if(robot.isRed){
-            gyroTurn( TURN_SPEED,  45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  -45.0);
-        } else if (robot.isBlue){
-            gyroTurn( TURN_SPEED,  -45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  45.0);
-        }
-        sleep(250);*/
         straitDrive(DRIVE_SPEED, -24.0);
-        sleep(1000);
-   //     shiftDrive(DRIVE_SPEED, -6.0);
-     //   sleep(500);
+        sleep(600);
+
         gyroTurn(TURN_SPEED, -9.5);
         sleep(500);
         relese(2.0);
         sleep(500);
-        //sleep(1000);
+
 
         sleep(500);
         straitDrive(DRIVE_SPEED, -20.0);
@@ -96,8 +59,8 @@ public class blue_top extends AutoBase {
         sleep(500);
         drop();
 
-sleep(500);
-       straitDrive(DRIVE_SPEED, 8.0);
+        sleep(500);
+        straitDrive(DRIVE_SPEED, 8.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

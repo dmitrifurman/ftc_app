@@ -94,56 +94,21 @@ public class red_top extends AutoBase {
         redColorArm();
         sleep(1000);
 
-     //   straitDrive(DRIVE_SPEED, -3.0);
-      /*  double shiftDistance = 0.0;
-        switch (readRelic()) {
-            case UNKNOWN:
-                shiftDistance = 11.0;
-                break;
-            case LEFT:
-                shiftDistance = 7.0;
-                break;
-            case CENTER:
-                shiftDistance = 11.0;
-                break;
-            case RIGHT:
-                shiftDistance = 15.0;
-                break;
-        }
 
-        //spin(-0.5, 1);
-      /*  spin(TURN_SPEED, -180);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MID_SERVO);
-        sleep(1000);
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
-        sleep(250);
-        if(robot.isRed){
-            gyroTurn( TURN_SPEED,  45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  -45.0);
-        } else if (robot.isBlue){
-            gyroTurn( TURN_SPEED,  -45.0);
-            sleep(250);
-            gyroTurn( TURN_SPEED,  45.0);
-        }
-        sleep(250);*/
         straitDrive(DRIVE_SPEED, 24.0);
         sleep(500);
-   //     shiftDrive(DRIVE_SPEED, shiftDistance);
-     //   sleep(1000);
+
         gyroTurn(TURN_SPEED, -117.5);
+
         sleep(500);
         relese(2.0);
         sleep(500);
+
         straitDrive(DRIVE_SPEED, -20.0);
 
         sleep(500);
-        //sleep(1000);
         drop();
         sleep(500);
-
-
 
         straitDrive(DRIVE_SPEED, 8.0);
 
