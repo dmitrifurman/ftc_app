@@ -41,31 +41,31 @@ public class blueTopPaperReader extends AutoBase {
     public void executeSpecificOpMode() {
         blueColorArm();
         sleep(500);
-        double boxAngle = 0;
+        double shiftDistance = 0;
         switch (readRelic()) {
             case UNKNOWN:
                 log("unknown");
-                boxAngle = -9.5;
+                shiftDistance = -9.5;
                 break;
             case LEFT:
                 log("left");
-                boxAngle = -7.5;
+                shiftDistance = -7.5;
                 break;
             case CENTER:
                 log("middle");
-                boxAngle = -9.5;
+                shiftDistance = -9.5;
                 break;
             case RIGHT:
                 log("right");
-                boxAngle = -11.5;
+                shiftDistance = -11.5;
                 break;
         }
 
         //spin(-0.5, 1);
-        sleep(1000);
+        sleep(500);
         straitDrive(DRIVE_SPEED, -24);
         sleep(500);
-        gyroTurn(TURN_SPEED, boxAngle);
+        gyroTurn(TURN_SPEED, shiftDistance);
         sleep(500);
         relese(2.0);
         sleep(500);
