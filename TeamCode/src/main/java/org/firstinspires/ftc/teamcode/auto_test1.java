@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -37,6 +39,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import java.net.SocketTimeoutException;
 
 
 /**
@@ -53,70 +57,44 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @Autonomous(name="auto test 1", group="Pushbot")
-//@Disabled
+@Disabled
 public class auto_test1 extends LinearOpMode {
 
-    // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
-    private DcMotor leftbackDrive = null;
-    private DcMotor rightbackDrive = null;
+
 
     @Override
     public void runOpMode() {
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        leftbackDrive = hardwareMap.get(DcMotor.class, "leftback_drive");
-        rightbackDrive = hardwareMap.get(DcMotor.class, "rightback_drive");
-
-        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightbackDrive.setDirection(DcMotor.Direction.FORWARD);
-
+        log("testwithoutwait isstarted is" + isStarted());
         // Wait for the game to start (driver presses PLAY)
+
         waitForStart();
+        /*try{
+            while(!isStarted()) {
+                sleep(5000);
+            }
+        }
+        catch (Exception ex){
+            log("exception" + isStarted());
+            waitForStart();
+
+        }
+        //waitForStart();
+*/
+
+        log("testwithoutwait for start");
 
 
 
     }
-    public void GoForward(double power){
-        leftDrive.setPower(power);
-        rightDrive.setPower(power);
-        leftbackDrive.setPower(power);
-        rightbackDrive.setPower(power);
+    protected void log(String message, Throwable... throwables) {
+        if (throwables.length > 0) {
+            Log.d("test", message, throwables[0]);
+        } else {
+            Log.d("test", message);
+        }
+        telemetry.addLine("test" + ": " + message);
+        telemetry.update();
     }
-    public void turnleft(double power){
-        leftDrive.setPower(-power);
-        rightDrive.setPower(power);
-        leftbackDrive.setPower(-power);
-        rightbackDrive.setPower(power);
-    }
-    public void turnright(double power){
-        leftDrive.setPower(power);
-        rightDrive.setPower(-power);
-        leftbackDrive.setPower(power);
-        rightbackDrive.setPower(-power);
-    }
-    public void goback(double power){
-        leftDrive.setPower(-power);
-        rightDrive.setPower(-power);
-        leftbackDrive.setPower(-power);
-        rightbackDrive.setPower(-power);
-    }
-
 
 }

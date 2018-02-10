@@ -67,7 +67,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  */
 
 @Autonomous(name="box setup reader", group ="Concept")
-//@Disabled
+@Disabled
 public class setup_encoder extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";

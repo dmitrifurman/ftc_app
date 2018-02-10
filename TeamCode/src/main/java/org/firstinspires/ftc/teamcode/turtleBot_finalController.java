@@ -71,8 +71,7 @@ public class turtleBot_finalController extends LinearOpMode {
     private Servo colorHolder;
     private Servo relicGrab;
     private static double SPEED = 1.0;
-    boolean extended = true;
-    boolean caught = true;
+
     // Maximum rotational position
 
     @Override
@@ -88,7 +87,7 @@ public class turtleBot_finalController extends LinearOpMode {
         rightbackDrive = hardwareMap.get(DcMotor.class, "rightback_drive");
         leftbackDrive = hardwareMap.get(DcMotor.class, "leftback_drive");
         spinner = hardwareMap.get(DcMotor.class, "spin");
-
+        extender = hardwareMap.get(DcMotor.class, "extender");
         elevator = hardwareMap.get(DcMotor.class, "elevator");
         grableft = hardwareMap.get(Servo.class, "grableft");
         grabright = hardwareMap.get(Servo.class, "grabright");
@@ -119,6 +118,7 @@ public class turtleBot_finalController extends LinearOpMode {
         Log.d("Turtle", "Init Left Controller: "+ grableft.getController().getServoPosition(0));
         Log.d("Turtle", "Init Right Controller: "+ grabright.getController().getServoPosition(1));
         // Wait for the game to start (driver presses PLAY)
+        boolean extended = false;
         waitForStart();
         runtime.reset();
 
@@ -147,25 +147,26 @@ public class turtleBot_finalController extends LinearOpMode {
             boolean moveRight = gamepad1.dpad_right;
             boolean moveLeft = gamepad1.dpad_left;
             boolean extend = gamepad1.left_bumper;
-            boolean relicHold = gamepad1.right_bumper;
+            boolean retract = gamepad1.right_bumper;
+            boolean relicHold = gamepad1.x;
+            boolean stay = gamepad2.left_bumper;
 
+            boolean caught = gamepad1.a;
             colorHolder.setPosition(0.4);
 
-            if(extend && extended){
-                extender.setPower(0.75);
-                extended = false;
-            }else if(!extended && extend){
+            if(extend) {
                 extender.setPower(-0.75);
                 extended = true;
-            }else{
-                extender.setPower(0.0);
+            } else if(retract) {
+                extender.setPower(0.75);
+            } else {
+                extender.setPower(0);
             }
-            if(relicHold && caught){
+
+            if(relicHold && !caught){
                 relicGrab.setPosition(1.0);
-                caught = false;
-            }else if(relicHold && !caught){
+            }else if(!relicHold && caught){
                 relicGrab.setPosition(0.5);
-                caught = true;
             }
 
             if (moveForward){
@@ -201,14 +202,20 @@ public class turtleBot_finalController extends LinearOpMode {
                 driveLeft(0);
             }
 
-            if (lift && !drop) {
-                elevator.setPower(0.8);
-            } else if (!lift && drop) {
-                elevator.setPower(-0.15);
+            double powerAdjust = 0.0;
+            double powerUp = 0.0;
+            if(extended) {
+                powerAdjust = 0.05;
+                powerUp = 0.25;
+            }
+
+            if (lift && !drop && !stay) {
+                elevator.setPower(0.75 - powerUp);
+            } else if (!lift && drop && !stay) {
+                elevator.setPower(0.05 - powerAdjust);
                 //} else if ((!lift && !drop) || (lift && drop)){
-            } else {
-                elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                elevator.setPower(0);
+            } else if (!lift && !drop && stay){
+                elevator.setPower(0.15);
             }
 
             while(leftgrab > 0 && rightgrab < 0) {
@@ -255,9 +262,9 @@ public class turtleBot_finalController extends LinearOpMode {
             }
 
             if (spinright && !spinleft){
-                spinner.setPower(0.6);
+                spinner.setPower(0.8);
             } else if (spinleft && !spinright) {
-                spinner.setPower(-0.6);
+                spinner.setPower(-0.8);
                 //} else if ((!spinleft && !spinright) || (spinleft && spinright)){
             } else {
                 spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

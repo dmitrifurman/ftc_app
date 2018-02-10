@@ -107,7 +107,7 @@ public class blueBottomPaperReader extends AutoBase {
         drop();
         sleep(500);
 
-        straitDrive(DRIVE_SPEED, 5.0);
+        straitDrive(DRIVE_SPEED, 8.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

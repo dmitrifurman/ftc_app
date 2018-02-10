@@ -89,6 +89,8 @@ public class red_top extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
+        robot.colorHolder.setPosition(robot.MIN_SERVO);
+        sleep(1000);
         redColorArm();
         sleep(1000);
 
@@ -127,23 +129,23 @@ public class red_top extends AutoBase {
         }
         sleep(250);*/
         straitDrive(DRIVE_SPEED, 24.0);
-        sleep(1000);
+        sleep(500);
    //     shiftDrive(DRIVE_SPEED, shiftDistance);
      //   sleep(1000);
         gyroTurn(TURN_SPEED, -117.5);
-        sleep(1000);
+        sleep(500);
         relese(2.0);
-        sleep(1000);
+        sleep(500);
         straitDrive(DRIVE_SPEED, -20.0);
 
-        sleep(1000);
+        sleep(500);
         //sleep(1000);
         drop();
-        sleep(1000);
+        sleep(500);
 
 
 
-        straitDrive(DRIVE_SPEED, 5.0);
+        straitDrive(DRIVE_SPEED, 8.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

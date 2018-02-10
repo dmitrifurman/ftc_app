@@ -90,7 +90,8 @@ public class red_bottom extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
-
+        robot.colorHolder.setPosition(robot.MIN_SERVO);
+        sleep(1000);
   redColorArm();
 
 
@@ -153,14 +154,14 @@ public class red_bottom extends AutoBase {
         sleep(1000);
         relese(2.0);
         sleep(1000);
-        straitDrive(DRIVE_SPEED, -15.0);
+        straitDrive(DRIVE_SPEED, -20.0);
 
         sleep(1000);
         //sleep(1000);
         drop();
         sleep(1000);
-
-        straitDrive(DRIVE_SPEED, 5.0);
+        //changed backup distance from 5 to 2
+        straitDrive(DRIVE_SPEED, 8.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

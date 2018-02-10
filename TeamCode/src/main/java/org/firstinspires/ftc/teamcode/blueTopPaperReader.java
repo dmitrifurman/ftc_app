@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
 @Autonomous(name="blue top + paper reader", group="Pushbot")
@@ -77,7 +78,7 @@ public class blueTopPaperReader extends AutoBase {
         drop();
 
 sleep(500);
-       straitDrive(DRIVE_SPEED, 5.0);
+       straitDrive(DRIVE_SPEED, 8.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

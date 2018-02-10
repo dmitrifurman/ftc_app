@@ -65,7 +65,7 @@ public class MyHardwarePushbot {
     public Servo grableft;
     public Servo grabright;
     public Servo colorHolder;
-    public static final double MAX_GRAB = 0.0;     // Maximum rotational position
+    public static final double MAX_GRAB = 0.4;     // Maximum rotational position
     public static final double MIN_GRAB = 1.0;
 
 

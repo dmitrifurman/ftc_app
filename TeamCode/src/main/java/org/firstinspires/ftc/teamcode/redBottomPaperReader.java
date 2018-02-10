@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
@@ -67,21 +68,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name="red bottom + picture reader", group="Pushbot")
 //@Disabled
-public class redBottomColorReader extends AutoBase {
+public class redBottomPaperReader extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
-        robot.spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.spinner.setPower(0);
-        robot.colorHolder.setPosition(robot.MAX_GRAB);
-        grab();
-        sleep(500);
-        lift(0.5);
-        sleep(500);
-        stopElevator();
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
-        sleep(1000);
-
   redColorArm();
 
 
@@ -91,23 +81,19 @@ public class redBottomColorReader extends AutoBase {
         sleep(1000);
 
         double shiftDistance = 0;
-        double boxAngle = 0;
+
         switch (readRelic()) {
             case UNKNOWN:
-                shiftDistance = 23.0;
-                boxAngle = 154.5;
+                shiftDistance = 24.0;
                 break;
             case LEFT:
-                shiftDistance = 18.0;
-                boxAngle =152.5;
+                shiftDistance = 28.0;
                 break;
             case CENTER:
-                shiftDistance = 23.0;
-                boxAngle =154.5;
+                shiftDistance = 24.0;
                 break;
             case RIGHT:
-                shiftDistance = 28.0;
-                boxAngle = 154.5;
+                shiftDistance = 22.0;
                 break;
     }
       /*  spin(TURN_SPEED, -180);
@@ -143,19 +129,19 @@ public class redBottomColorReader extends AutoBase {
         // Turn  CW  to  45 Degrees
 
         // Hold  45 Deg heading for a 1/2 secon
-        gyroTurn(TURN_SPEED, boxAngle);
+        gyroTurn(TURN_SPEED, 154.5);
         // Drive REV 48 inches
         sleep(500);
         relese(2.0);
         sleep(500);
-        straitDrive(DRIVE_SPEED, -12.0);
+        straitDrive(DRIVE_SPEED, -20.0);
 
         sleep(500);
         //sleep(1000);
         drop();
         sleep(500);
 
-        straitDrive(DRIVE_SPEED, 5.0);
+        straitDrive(DRIVE_SPEED, 8.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

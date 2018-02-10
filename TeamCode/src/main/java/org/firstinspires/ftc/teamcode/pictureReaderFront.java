@@ -67,7 +67,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  */
 
 @Autonomous(name="picture reader front", group ="Concept")
-//@Disabled
+@Disabled
 public class pictureReaderFront extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";

@@ -54,8 +54,8 @@ public abstract class AutoBase extends LinearOpMode {
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     //static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
     //                                                  (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final int COUNTS_PER_INCH = 58;
-    static final double COUNTS_PER_SHIFT = 72.5;
+    static final double COUNTS_PER_INCH = 87;
+    static final double COUNTS_PER_SHIFT = 108;
     static final int SPIN_TOILET_PART = 560;
     protected static final String TAG = "gyro";
     // These constants define the desired driving/control characteristics
@@ -100,13 +100,13 @@ public abstract class AutoBase extends LinearOpMode {
         waitForStart();
         robot.spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.spinner.setPower(0);
-        robot.colorHolder.setPosition(robot.MAX_GRAB);
+        robot.colorHolder.setPosition(robot.MIN_GRAB);
+        sleep(250);
         grab();
         sleep(500);
         lift(0.5);
         sleep(500);
         stopElevator();
-        robot.colorHolder.setPosition(robot.MIN_SERVO);
         sleep(1000);
         executeSpecificOpMode();
     }
@@ -143,7 +143,7 @@ public abstract class AutoBase extends LinearOpMode {
         NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
       // rightClaw.setPosition(MID_SERVO);
 
-        isRed = colors.red > colors.blue*1.35 & colors.red > colors.green*1.35;
+        isRed = colors.red > colors.blue*1.33 & colors.red > colors.green*1.33;
         isBlue = colors.blue > colors.red;
 
         telemetry.addData("read color is blue", isBlue);
@@ -172,19 +172,19 @@ public abstract class AutoBase extends LinearOpMode {
     public void noColor(){
         robot.colorHolder.setPosition(robot.MAX_GRAB);
         sleep(250);
-        gyroTurn(TURN_SPEED, 22);
+        gyroTurn(TURN_SPEED, 21);
     }
     public void blueColorArm() {
         readColor();
-        log("bluecolorsrm robot is blue" + isBlue);
+//        log("blueColorArm robot is blue" + isBlue);
         if (isBlue) {
             sawBlue();
         } else {
            sawRed();
-
-
-        }
-    }
+        }// else {
+          //  noColor();
+       // }
+   }
 
     public void redColorArm() {
         readColor();

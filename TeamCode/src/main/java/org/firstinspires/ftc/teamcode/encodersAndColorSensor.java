@@ -77,7 +77,7 @@ import static com.qualcomm.robotcore.R.attr.colors;
  */
 
 @Autonomous(name="wifi auto test with color sensor 7.", group="Pushbot")
-//@Disabled
+@Disabled
 public class encodersAndColorSensor extends LinearOpMode {
 
     /* Declare OpMode members. */

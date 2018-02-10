@@ -39,6 +39,8 @@ public class blue_top extends AutoBase {
 
     @Override
     public void executeSpecificOpMode() {
+        robot.colorHolder.setPosition(robot.MIN_SERVO);
+        sleep(1000);
         blueColorArm();
         sleep(1000);
  /*       double boxAngle = 0;
@@ -95,7 +97,7 @@ public class blue_top extends AutoBase {
         drop();
 
 sleep(500);
-       straitDrive(DRIVE_SPEED, 5.0);
+       straitDrive(DRIVE_SPEED, 8.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
